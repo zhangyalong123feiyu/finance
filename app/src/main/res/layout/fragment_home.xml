@@ -1,0 +1,291 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.bibinet.finance.builder.ViewAllShowLinearLayout
+            android:id="@+id/view_all_show"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <ScrollView
+                android:id="@+id/scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                    <include layout="@layout/titlebar"
+                        />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.hejunlin.superindicatorlibray.LoopViewPager
+                                android:id="@+id/viewpager"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_alignParentTop="true" />
+                            <com.hejunlin.superindicatorlibray.CircleIndicator
+                                android:id="@+id/indicator"
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"
+                                android:layout_gravity="right|center_vertical"
+                                android:layout_alignParentBottom="true"
+                                android:background="#30BA55D3"
+                                android:gravity="center"
+                                android:orientation="horizontal" />
+                        </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/lightgray"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/search_shape"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/search_edit"
+                                android:layout_width="0dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textSize="13sp"
+                                android:background="@null"
+                                android:hint="请输入要查询的真伪码" />
+
+                            <ImageView
+                                android:id="@+id/search_image"
+                                android:layout_width="25dp"
+                                android:src="@mipmap/search"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="5dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/requestbook"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="2dp"
+                                    android:textColor="@color/blue"
+                                    android:text="@string/requestbook" />
+
+                                <TextView
+                                    android:id="@+id/requestbooknumber"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/requestbook"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="2dp"
+                                    android:text="1000份" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp"
+                                android:background="@color/gray" />
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/thoughrequest"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:textColor="@color/green"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/exaimenumber" />
+
+                                <TextView
+                                    android:id="@+id/exaimenumber"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/thoughrequest"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="2dp"
+                                    android:text="1000份" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp"
+                                android:background="@color/gray" />
+
+                            <RelativeLayout
+                                android:id="@+id/bottommore"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:clickable="true"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/red"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/allmoney" />
+
+                                <TextView
+                                    android:id="@+id/allmoney"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/all"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="2dp"
+                                    android:text="1000份" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll1"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/professonalmove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/professtionalmove"
+                            android:textColor="@drawable/bottomtext_selector"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/sucess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/sucess"
+                            android:textColor="@drawable/bottomtext_selector"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/brand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="20dp"
+                            android:text="@string/brand"
+                            android:textColor="@drawable/bottomtext_selector"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/vi"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lightgray" />
+
+                    <RelativeLayout
+                        android:id="@+id/main_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </ScrollView>
+        </com.bibinet.finance.builder.ViewAllShowLinearLayout>
+        <LinearLayout
+            android:id="@+id/ll2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/professonalmove_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/professtionalmove"
+                android:textColor="@drawable/bottomtext_selector"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/sucess_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="@string/sucess"
+                android:textColor="@drawable/bottomtext_selector"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/brand_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="@string/brand"
+                android:textColor="@drawable/bottomtext_selector"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/folatbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+</RelativeLayout>

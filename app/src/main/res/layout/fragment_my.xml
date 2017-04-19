@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="bibi.com.binet.pro.activity.FragmentMy">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/comnaylogin"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="公司登录" />
+    <Button
+        android:id="@+id/banklogin"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="银行登录" />
+    <Button
+        android:id="@+id/operationlogin"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="运营登录" />
+
+</LinearLayout>
