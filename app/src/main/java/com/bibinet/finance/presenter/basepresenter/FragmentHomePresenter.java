@@ -5,5 +5,5 @@ package com.bibinet.finance.presenter.basepresenter;
  */
 
 public interface FragmentHomePresenter {
-    void LoadData();
+    void LoadData(String url);
 }

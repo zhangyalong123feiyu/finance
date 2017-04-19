@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearbottom"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="@dimen/titibar_hight"
         android:background="@color/lightgray"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">

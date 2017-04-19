@@ -18,9 +18,11 @@ import android.widget.TextView;
 
 import com.bibinet.finance.R;
 import com.bibinet.finance.adapter.FragmentHomeBannerAdapter;
+import com.bibinet.finance.bean.StudentBean;
 import com.bibinet.finance.builder.MyGestureListioner;
 import com.bibinet.finance.builder.ViewAllShowLinearLayout;
 import com.bibinet.finance.constant.ProjectUrl;
+import com.bibinet.finance.presenter.presenterimpl.FragmentHomePresenterImpl;
 import com.bibinet.finance.view.FragmentHomeView;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
@@ -97,6 +99,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
     private View view;
     private List<String> pics=new ArrayList<>();
     private GestureDetector gestureListioner;
+    private FragmentHomePresenterImpl fragmentHomePresenter;
 
     public FragmentHome() {
         // Required empty public constructor
@@ -110,8 +113,14 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
         view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
         initView();
+        loadData();
         setListener();
         return view;
+    }
+
+    private void loadData() {
+        fragmentHomePresenter=new FragmentHomePresenterImpl(this);
+        fragmentHomePresenter.LoadData(ProjectUrl.ImageUrls[0]);
     }
 
     private void initView() {
@@ -140,6 +149,11 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
         //滑动按钮部分
         gestureListioner=new GestureDetector(new MyGestureListioner(getActivity(),scrollview,folatbutton));
 
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return gestureListioner.onTouchEvent(event);
     }
 
     private void setListener() {
@@ -174,7 +188,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
     }
 
     @Override
-    public void addData() {
+    public void showData(StudentBean studentBean) {
 
     }
 
@@ -216,8 +230,4 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
     }
 
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return gestureListioner.onTouchEvent(event);
-    }
 }
