@@ -12,10 +12,10 @@ import com.bibinet.finance.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentBranch extends Fragment {
+public class FragmentBrand extends Fragment {
 
 
-    public FragmentBranch() {
+    public FragmentBrand() {
         // Required empty public constructor
     }
 

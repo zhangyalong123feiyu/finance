@@ -1,7 +1,9 @@
 package com.bibinet.finance.activity;
-import android.gesture.Gesture;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -36,10 +38,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.bibinet.finance.activity.MainActivity.currentTabIndex;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnTouchListener{
+public class FragmentHome extends Fragment implements FragmentHomeView {
 
     @BindView(R.id.title)
     TextView title;
@@ -97,9 +101,16 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
     Button folatbutton;
     Unbinder unbinder;
     private View view;
-    private List<String> pics=new ArrayList<>();
+    private List<String> pics = new ArrayList<>();
     private GestureDetector gestureListioner;
     private FragmentHomePresenterImpl fragmentHomePresenter;
+    private FragmentProfession fragementprofe;
+    private FragmentSucess fragmentSucess;
+    private FragmentBrand fragementBrand;
+    private Fragment[] fragments;
+    private TextView[] mTabsTop;
+    private TextView[] mTabs;
+    private int index;
 
     public FragmentHome() {
         // Required empty public constructor
@@ -119,7 +130,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
     }
 
     private void loadData() {
-        fragmentHomePresenter=new FragmentHomePresenterImpl(this);
+        fragmentHomePresenter = new FragmentHomePresenterImpl(this);
         fragmentHomePresenter.LoadData(ProjectUrl.ImageUrls[0]);
     }
 
@@ -134,33 +145,61 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
                         Log.i("TAG", "到达顶部");
                         ll2.setVisibility(View.VISIBLE);
                     }
+
                     @Override
                     public void onViewGone() {
                         ll2.setVisibility(View.GONE);
                     }
                 });
-        pics=Arrays.asList(ProjectUrl.ImageUrls);
-        FragmentHomeBannerAdapter adapter=new FragmentHomeBannerAdapter(getActivity(),pics);
-       //轮播图代码部分
+        pics = Arrays.asList(ProjectUrl.ImageUrls);
+        FragmentHomeBannerAdapter adapter = new FragmentHomeBannerAdapter(getActivity(), pics);
+        //轮播图代码部分
         viewpager.setAdapter(adapter);
         viewpager.setLooperPic(true);
         viewpager.setOnDispatchTouchEventListener(mDispatchOnTouchListener);
         indicator.setViewPager(viewpager);
+        indicator.getDataSetObserver();
+
         //滑动按钮部分
-        gestureListioner=new GestureDetector(new MyGestureListioner(getActivity(),scrollview,folatbutton));
+        gestureListioner = new GestureDetector(new MyGestureListioner(getActivity(), scrollview, folatbutton));
+       scrollview.setOnTouchListener(new View.OnTouchListener() {
+           @Override
+           public boolean onTouch(View v, MotionEvent event) {
+               return gestureListioner.onTouchEvent(event);
+           }
+       });
+        //行业动态，成功案例，旗下品牌三个Fragment部分
+        fragementprofe=new FragmentProfession();
+        fragmentSucess=new FragmentSucess();
+        fragementBrand=new FragmentBrand();
+        fragments = new Fragment[]{fragementprofe, fragmentSucess, fragementBrand};
 
+        getChildFragmentManager().beginTransaction().replace(R.id.main_container,fragementprofe ).show(fragementprofe).
+                add(R.id.main_container, fragmentSucess).hide(fragmentSucess).add(R.id.main_container, fragementBrand).hide(fragementBrand)
+                .commit();
+        mTabs = new TextView[3];
+        mTabs[0] = professonalmove;
+        mTabs[1] = sucess;
+        mTabs[2] = brand;
+        mTabsTop=new TextView[3];
+        mTabsTop[0]=professonalmoveTop;
+        mTabsTop[1]=sucessTop;
+        mTabsTop[2]=brandTop;
+        // 把第一个tab设为选中状态
+        mTabs[0].setSelected(true);
+        mTabsTop[0].setSelected(true);
     }
-
+/*
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return gestureListioner.onTouchEvent(event);
-    }
+    }*/
 
     private void setListener() {
         folatbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollview.scrollTo(0,0);
+                scrollview.scrollTo(0, 0);
             }
         });
 
@@ -177,6 +216,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
             }
         }
     };
+
     @Override
     public void showProgress() {
 
@@ -213,21 +253,41 @@ public class FragmentHome extends Fragment implements FragmentHomeView ,View.OnT
             case R.id.search_image:
                 break;
             case R.id.professonalmove:
+                index=0;
                 break;
             case R.id.sucess:
+                index=1;
                 break;
             case R.id.brand:
+                index=2;
                 break;
             case R.id.professonalmove_top:
+                index=0;
                 break;
             case R.id.sucess_top:
+                index=1;
                 break;
             case R.id.brand_top:
+                index=2;
                 break;
             case R.id.folatbutton:
+                scrollview.scrollTo(0,0);
                 break;
         }
+        if (currentTabIndex != index) {
+            FragmentTransaction trx = getChildFragmentManager().beginTransaction();
+            trx.hide(fragments[currentTabIndex]);
+            if (!fragments[index].isAdded()) {
+                trx.add(R.id.fragementcontainer, fragments[index]);
+            }
+            trx.show(fragments[index]).commit();
+        }
+        mTabs[currentTabIndex].setSelected(false);
+        mTabsTop[currentTabIndex].setSelected(false);
+        // 把当前tab设为选中状态
+        mTabs[index].setSelected(true);
+        mTabsTop[index].setSelected(true);
+        currentTabIndex = index;
     }
-
 
 }

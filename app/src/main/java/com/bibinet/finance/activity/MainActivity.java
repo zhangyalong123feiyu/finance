@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bibinet.finance.R;
@@ -104,10 +105,13 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bottomhome:
+                index=0;
                 break;
             case R.id.bottommy:
+                index=1;
                 break;
             case R.id.bottommore:
+                index=2;
                 break;
         }
     }

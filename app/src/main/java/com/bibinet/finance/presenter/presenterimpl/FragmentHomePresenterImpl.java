@@ -22,7 +22,7 @@ public class FragmentHomePresenterImpl implements FragmentHomePresenter {
     fragmentHomeModelImp.loadData(url, new FragmentHomeModelImp.OnLoadFragmenetHomeListioner() {
         @Override
         public void onSucess(StudentBean students) {
-            fragmentHomeView.addData(students);
+            fragmentHomeView.showData(students);
         }
 
         @Override
