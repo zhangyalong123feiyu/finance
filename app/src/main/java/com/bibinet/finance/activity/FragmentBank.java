@@ -52,12 +52,12 @@ public class FragmentBank extends Fragment implements FragmentBankView{
         view = inflater.inflate(R.layout.fragment_bank, container, false);
         unbinder = ButterKnife.bind(this, view);
         initView();
-        loadData();
+        loadData(false);
         return view;
     }
 
-    private void loadData() {
-        fragmentBankPresenterImp=new FragmentBankPresenterImp(this);
+    private void loadData(boolean isLoadMore) {
+        fragmentBankPresenterImp=new FragmentBankPresenterImp(this,isLoadMore);
         fragmentBankPresenterImp.LoadData("https://api.tianapi.com/guonei/",1);
     }
 
@@ -68,7 +68,7 @@ public class FragmentBank extends Fragment implements FragmentBankView{
         socialrefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initData(false);
+                loadData(false);
             }
         });
         socailreyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -76,7 +76,7 @@ public class FragmentBank extends Fragment implements FragmentBankView{
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
-                    initData(true);
+                    loadData(true);
                 }
             }
 
@@ -90,17 +90,6 @@ public class FragmentBank extends Fragment implements FragmentBankView{
         socialrefresh.setRefreshing(true);
     }
 
-      private void initData(final boolean isLoadMore) {
-        if (isLoadMore) {
-            adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
-            page++;
-        } else {
-            page = 1;
-        }
-
-
-
-    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -118,9 +107,29 @@ public class FragmentBank extends Fragment implements FragmentBankView{
     }
 
     @Override
-    public void showData(List<SocailBean.SocailInfo> socailInfo) {
-         adapter=new SocailFooterAdapter(getActivity(),socailInfo);
+    public void showData(List<SocailBean.SocailInfo> socailInfo,boolean isLoadMore) {
+//     adapter=new SocailFooterAdapter(getActivity(),socailInfo);
+        /*   socailreyclerview.setAdapter(adapter);*/
+        if (isLoadMore){
+           // adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
+            page++;
+            if (socailInfo.size()==0){
+                Toast.makeText(getActivity(),"没有更多数据",Toast.LENGTH_SHORT).show();
+                adapter.changeMoreStatus(SocailFooterAdapter.PULLUP_LOAD_MORE);
+                // infoListView.scrollToPosition(InfoRefreshFootAdapter.Lastposition);
+                socailreyclerview.smoothScrollToPosition(adapter.getItemCount()-1);
+                // infoListView.smoothScrollBy(240,1000);
+            }else{
+                adapter.addMoreItem(socailInfo);
+                adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
+            }
+        }
+        else {
+            page=1;
+        adapter =new SocailFooterAdapter(getActivity(), socailInfo);
         socailreyclerview.setAdapter(adapter);
+        socialrefresh.setRefreshing(false);
+        }
     }
 
     @Override

@@ -9,6 +9,6 @@ import java.util.List;
  */
 
 public interface FragmentBankView extends BaseView {
-    void showData(List<SocailBean.SocailInfo> socailBean);
+    void showData(List<SocailBean.SocailInfo> socailBean,boolean isLoadMore);
     void showLoadFailed(String error);
 }

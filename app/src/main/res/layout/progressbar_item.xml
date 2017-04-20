@@ -7,7 +7,6 @@
 
     <ProgressBar
         android:id="@+id/loadMore"
-        style="@android:style/Widget.Material.Light.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />

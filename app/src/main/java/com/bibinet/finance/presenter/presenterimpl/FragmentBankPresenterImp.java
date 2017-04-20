@@ -15,19 +15,20 @@ import java.util.List;
 public class FragmentBankPresenterImp implements FragmentBankPresenter {
     private FragmentBankModelImp fragmentBankModelImp;
     private FragmentBankView fragmentBankView;
-
-    public FragmentBankPresenterImp(FragmentBankView fragmentBankView) {
+    private   boolean isLoadMore;
+    public FragmentBankPresenterImp(FragmentBankView fragmentBankView,boolean isLoadMore) {
         fragmentBankModelImp=new FragmentBankModelImp();
         this.fragmentBankView = fragmentBankView;
+        this.isLoadMore=isLoadMore;
     }
 
     @Override
     public void LoadData(String url, int page) {
-        fragmentBankView.showProgress();
+
         fragmentBankModelImp.loadData(url, page, new FragmentBankModel.FragmentBankModelListioner() {
             @Override
             public void onSucess(List<SocailBean.SocailInfo> socailInfo) {
-                fragmentBankView.showData(socailInfo);
+                fragmentBankView.showData(socailInfo,isLoadMore);
                 fragmentBankView.hideProgress();
             }
 
