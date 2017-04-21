@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshViewFooter;
+import com.andview.refreshview.recyclerview.BaseRecyclerAdapter;
 import com.bibinet.finance.R;
 import com.bibinet.finance.adapter.FragmentMoreAdapter;
 import com.bibinet.finance.adapter.SocailFooterAdapter;
@@ -51,14 +52,14 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_more, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initView();
         loadData(false);
+        initView();
         return view;
     }
 
     private void loadData(boolean isLoadMore) {
         presenterImp=new FragmentMorePresenterImp(this,isLoadMore);
-        presenterImp.LoadData("",page);
+        presenterImp.LoadData("http://api.tianapi.com/qiwen/?key",page);
     }
 
     private void initView() {
@@ -70,6 +71,9 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
         xrefreshview.setMoveForHorizontal(true);
         xrefreshview.setPullLoadEnable(true);
         xrefreshview.setAutoLoadMore(false);
+        if (adapter!=null){
+            adapter.setCustomLoadMoreView(new XRefreshViewFooter(getActivity()));
+        }
 
         xrefreshview.enableReleaseToLoadMore(true);
         xrefreshview.enableRecyclerViewPullUp(true);
@@ -78,9 +82,16 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
             @Override
             public void onLoadMore(boolean isSilence) {
                 super.onLoadMore(isSilence);
-                loadData(isSilence);
+                loadData(true);
+
             }
 
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                xrefreshview.startRefresh();
+                loadData(false);
+            }
         });
     }
 
@@ -102,6 +113,7 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
 
     @Override
     public void showData(List<SocailBean.SocailInfo> socailInfo, boolean isLoadMore) {
+
         if (isLoadMore){
             // adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
             page++;
@@ -120,9 +132,11 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
         else {
             page=1;
             adapter =new FragmentMoreAdapter(getActivity(),socailInfo);
+
             recyclerviewmore.setAdapter(adapter);
             xrefreshview.stopRefresh();
         }
+
     }
 
     @Override

@@ -18,9 +18,9 @@ public class FragmentMoreModelImp implements FragmentMoreModel {
     @Override
     public void loadData(String url, int page, final FragmentMoreModelListioner listioner) {
         RequestParams requestParams=new RequestParams(url);
-        requestParams.addBodyParameter("key","");
+        requestParams.addBodyParameter("key","f970d00798f1c3566388bf4af2fa6bac");
         requestParams.addBodyParameter("num","10");
-        requestParams.addBodyParameter("page","");
+        requestParams.addBodyParameter("page",String.valueOf(page));
         x.http().get(requestParams, new MyCallBack(){
             @Override
             public void onSuccess(String s) {
