@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="bibi.com.binet.pro.activity.FragmentMy">
+   >
 
-    <!-- TODO: Update blank fragment layout -->
     <Button
         android:id="@+id/comnaylogin"
         android:layout_width="100dp"

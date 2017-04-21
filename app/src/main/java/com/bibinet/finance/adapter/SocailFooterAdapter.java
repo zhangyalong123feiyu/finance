@@ -102,7 +102,7 @@ public class SocailFooterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class FootViewHolder extends RecyclerView.ViewHolder {
+/*    public class FootViewHolder extends RecyclerView.ViewHolder {
         private ProgressBar loadMore;
         private TextView textshow;
 
@@ -111,7 +111,7 @@ public class SocailFooterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             loadMore = (ProgressBar) itemView.findViewById(R.id.loadMore);
             textshow = (TextView) itemView.findViewById(R.id.textshow);
         }
-    }
+    }*/
 
     public void addMoreItem(List<SocailBean.SocailInfo> newDatas) {
         System.out.print(this.socailInfos.size() + "原有数据");

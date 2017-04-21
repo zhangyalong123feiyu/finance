@@ -122,6 +122,7 @@ public class FragmentBank extends Fragment implements FragmentBankView{
             }else{
                 adapter.addMoreItem(socailInfo);
                 adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
+
             }
         }
         else {
@@ -135,6 +136,7 @@ public class FragmentBank extends Fragment implements FragmentBankView{
     @Override
     public void showLoadFailed(String error) {
         socialrefresh.setRefreshing(false);
+
     }
 
 }

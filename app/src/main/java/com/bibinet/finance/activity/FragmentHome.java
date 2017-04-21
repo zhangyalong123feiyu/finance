@@ -28,6 +28,7 @@ import com.bibinet.finance.presenter.presenterimpl.FragmentHomePresenterImpl;
 import com.bibinet.finance.view.FragmentHomeView;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
