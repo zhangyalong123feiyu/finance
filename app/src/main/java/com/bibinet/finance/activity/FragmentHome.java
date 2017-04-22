@@ -25,10 +25,12 @@ import com.bibinet.finance.builder.MyGestureListioner;
 import com.bibinet.finance.builder.ViewAllShowLinearLayout;
 import com.bibinet.finance.constant.ProjectUrl;
 import com.bibinet.finance.presenter.presenterimpl.FragmentHomePresenterImpl;
+import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.view.FragmentHomeView;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
 import com.zhy.autolayout.utils.AutoUtils;
+import com.zhy.autolayout.utils.DimenUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -204,6 +206,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
             }
         });
 
+
     }
 
     private LoopViewPager.OnDispatchTouchEventListener mDispatchOnTouchListener = new LoopViewPager.OnDispatchTouchEventListener() {
@@ -252,6 +255,16 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
             case R.id.title_imageleft:
                 break;
             case R.id.search_image:
+                final DialogUtils dialogUtils=new DialogUtils(getActivity(),R.layout.titlebar);
+                dialogUtils.diloagShow(getActivity(),R.layout.titlebar);
+
+                dialogUtils.setDialoglistioner(new DialogUtils.DialogListioner() {
+                    @Override
+                    public void onDialogClickListioner(View view) {
+                        TextView titlexin = (TextView) view.findViewById(R.id.title);
+                        titlexin.setText("wo");
+                    }
+                });
                 break;
             case R.id.professonalmove:
                 index=0;

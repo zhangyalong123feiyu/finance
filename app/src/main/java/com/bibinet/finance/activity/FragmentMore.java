@@ -42,7 +42,7 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
     private FragmentMorePresenterImp presenterImp;
     private int page;
     private FragmentMoreAdapter adapter;
-
+    private XRefreshViewFooter footerView;
     public FragmentMore() {
         // Required empty public constructor
     }
@@ -71,10 +71,8 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
         xrefreshview.setMoveForHorizontal(true);
         xrefreshview.setPullLoadEnable(true);
         xrefreshview.setAutoLoadMore(false);
-        if (adapter!=null){
-            adapter.setCustomLoadMoreView(new XRefreshViewFooter(getActivity()));
-        }
 
+        footerView=new XRefreshViewFooter(getActivity());
         xrefreshview.enableReleaseToLoadMore(true);
         xrefreshview.enableRecyclerViewPullUp(true);
         xrefreshview.enablePullUpWhenLoadCompleted(true);
@@ -82,6 +80,7 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
             @Override
             public void onLoadMore(boolean isSilence) {
                 super.onLoadMore(isSilence);
+                Toast.makeText(getActivity(),"加载更多",Toast.LENGTH_SHORT).show();
                 loadData(true);
 
             }
@@ -116,6 +115,7 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
 
         if (isLoadMore){
             // adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
+            adapter.setCustomLoadMoreView(footerView);
             page++;
             if (socailInfo.size()==0){
                 Toast.makeText(getActivity(),"没有更多数据",Toast.LENGTH_SHORT).show();

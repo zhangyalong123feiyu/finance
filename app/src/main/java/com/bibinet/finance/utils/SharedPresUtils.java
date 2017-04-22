@@ -21,6 +21,7 @@ public class SharedPresUtils {
 	private static final int MODE = Context.MODE_PRIVATE;
 
 	private SharedPresUtils() {
+
 	}
 
 	public static SharedPresUtils getsSharedPresUtils(Context context) {
