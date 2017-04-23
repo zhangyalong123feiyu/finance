@@ -10,15 +10,9 @@ import android.view.View;
  */
 
 public class DialogUtils {
-    private Context context;
-    private int ResourceId;
     private DialogListioner dialogListioner;
     private View view;
 
-    public DialogUtils(Context context, int resourceId) {
-        this.context = context;
-        ResourceId = resourceId;
-    }
     public View getView(){
        return view;
     }

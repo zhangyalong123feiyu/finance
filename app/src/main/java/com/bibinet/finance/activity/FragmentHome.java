@@ -255,7 +255,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
             case R.id.title_imageleft:
                 break;
             case R.id.search_image:
-                final DialogUtils dialogUtils=new DialogUtils(getActivity(),R.layout.titlebar);
+                final DialogUtils dialogUtils=new DialogUtils();
                 dialogUtils.diloagShow(getActivity(),R.layout.titlebar);
 
                 dialogUtils.setDialoglistioner(new DialogUtils.DialogListioner() {

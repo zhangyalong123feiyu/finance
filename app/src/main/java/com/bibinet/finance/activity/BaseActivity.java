@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.bibinet.finance.R;
@@ -15,7 +16,7 @@ import com.zhy.autolayout.AutoLayoutActivity;
  * Created by bibinet on 2017-4-18.
  */
 
-public class BaseActivity extends AutoLayoutActivity{
+public class BaseActivity extends AppCompatActivity{
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
