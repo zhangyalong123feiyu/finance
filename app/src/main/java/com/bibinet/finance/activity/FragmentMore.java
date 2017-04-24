@@ -18,6 +18,7 @@ import com.bibinet.finance.adapter.FragmentMoreAdapter;
 import com.bibinet.finance.adapter.SocailFooterAdapter;
 import com.bibinet.finance.bean.SocailBean;
 import com.bibinet.finance.presenter.presenterimpl.FragmentMorePresenterImp;
+import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.view.FragmentMoreView;
 
 import java.util.List;
@@ -53,7 +54,8 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
         view = inflater.inflate(R.layout.fragment_more, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        initView();
+       initView();
+   //   setListioner();
         return view;
     }
 
@@ -63,42 +65,58 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
     }
 
     private void initView() {
-        recyclerviewmore.setHasFixedSize(true);
-        loadData(false);
+/*        recyclerviewmore.setHasFixedSize(true);
+    //    initData();
 
+        // 设置静默加载模式
+//        xRefreshView1.setSilenceLoadMore();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerviewmore.setLayoutManager(layoutManager);
-
-        xrefreshview.setAutoRefresh(true);
+        // 静默加载模式不能设置footerview
+      //  recyclerviewmore.setAdapter(adapter);
         //设置刷新完成以后，headerview固定的时间
         xrefreshview.setPinnedTime(1000);
-       // xrefreshview.setMoveForHorizontal(true);
+        xrefreshview.setMoveForHorizontal(true);
         xrefreshview.setPullLoadEnable(true);
         xrefreshview.setAutoLoadMore(false);
-
-       footerView=new XRefreshViewFooter(getActivity());
-       /*  xrefreshview.enableReleaseToLoadMore(true);
+      //  adapter.setCustomLoadMoreView(new XRefreshViewFooter(this));
+        xrefreshview.enableReleaseToLoadMore(true);
         xrefreshview.enableRecyclerViewPullUp(true);
         xrefreshview.enablePullUpWhenLoadCompleted(true);*/
-        xrefreshview.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener(){
+        xrefreshview.setPullLoadEnable(true);
+      //  xrefreshview.setAutoRefresh(true);
+        xrefreshview.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
+            @Override
+            public void onRefresh(boolean isPullDown) {
+//                loadDatas(true);
+                LogUtils.getLogInstance().logMessage("下拉刷新");
+            }
             @Override
             public void onLoadMore(boolean isSilence) {
-               // super.onLoadMore(isSilence);
-                Toast.makeText(getActivity(),"加载更多",Toast.LENGTH_SHORT).show();
-                loadData(true);
+//                loadDatas(false);
+                LogUtils.getLogInstance().logMessage("上拉加载更多");
+            }
+        });
 
+        recyclerviewmore.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+    }
+
+    private void setListioner() {
+        xrefreshview.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener(){
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                LogUtils.getLogInstance().logMessage("下拉刷新");
             }
 
             @Override
-            public void onRefresh(boolean isPullDown) {
-              //  super.onRefresh(isPullDown);
-                Toast.makeText(getActivity(),"下拉刷新",Toast.LENGTH_SHORT).show();
-                xrefreshview.startRefresh();
-                loadData(false);
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                LogUtils.getLogInstance().logMessage("上拉加载更多");
             }
         });
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -131,7 +149,7 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
             }else{
                 adapter.inSert(socailInfo);
                 adapter.notifyDataSetChanged();
-
+                xrefreshview.stopRefresh();
             }
         }
         else {
@@ -139,7 +157,7 @@ public class FragmentMore extends Fragment implements FragmentMoreView {
             adapter =new FragmentMoreAdapter(getActivity(),socailInfo);
 
             recyclerviewmore.setAdapter(adapter);
-            xrefreshview.stopRefresh();
+            xrefreshview.stopLoadMore();
         }
 
     }

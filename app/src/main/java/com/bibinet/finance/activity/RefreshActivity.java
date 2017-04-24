@@ -56,7 +56,9 @@ public class RefreshActivity extends BaseActivity  implements FragmentMoreView {
         xrefreshview.setPullLoadEnable(true);
         xrefreshview.setAutoLoadMore(false);
 
+
         footerView=new XRefreshViewFooter(activity);
+
          xrefreshview.enableReleaseToLoadMore(true);
         xrefreshview.enableRecyclerViewPullUp(true);
         xrefreshview.enablePullUpWhenLoadCompleted(true);
@@ -95,7 +97,7 @@ public class RefreshActivity extends BaseActivity  implements FragmentMoreView {
 
         if (isLoadMore){
             // adapter.changeMoreStatus(SocailFooterAdapter.LOADING_MORE);
-          adapter.setCustomLoadMoreView(footerView);
+            adapter.setCustomLoadMoreView(footerView);
             page++;
             if (socailInfo.size()==0){
                 Toast.makeText(activity,"没有更多数据",Toast.LENGTH_SHORT).show();
