@@ -151,4 +151,32 @@
     <color name="darkblue">#00008B</color><!--暗蓝色 -->
     <color name="navy">#000080</color><!--海军色 -->
     <color name="black">#000000</color><!--黑色 -->
+
+
+
+<!--原比翼联盟颜色表-->
+    <color name="title">#50cacd</color>
+    <!-- 顶部颜色 -->
+    <color name="main_background">#ececec</color>
+    <!-- 首页背景颜色 -->
+    <color name="text_huise">#666666</color>
+    <color name="content_huice">#f7f7f7</color>
+    <color name="text_color">#333333</color>
+    <color name="text2_color">#666666</color>
+    <color name="text3_color">#999999</color>
+    <color name="text_RMB">#e6685a</color>
+    <color name="textBt_color">#ffffff</color>
+    <color name="bd_text">#c1e2e2</color>
+    <!-- 报单中使用 -->
+    <color name="content_huangse">#ffcd46</color>
+    <color name="line">#cecece</color>
+    <!-- 报单中使用 -->
+
+
+    <color name="recommend_red">#E74B3B</color>
+    <color name="col_white">#ffffff</color>
+    <color name="col_black">#000000</color>
+    <color name="col_huise">#d3d3d3</color>
+    <color name="col_huibai">#555555</color>
+    <color name="col_qingse">#8e8e8e</color>
 </resources>

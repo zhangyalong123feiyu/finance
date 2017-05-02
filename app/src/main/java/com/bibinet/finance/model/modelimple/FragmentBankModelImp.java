@@ -1,5 +1,7 @@
 package com.bibinet.finance.model.modelimple;
 
+import android.content.Context;
+
 import com.bibinet.finance.bean.SocailBean;
 import com.bibinet.finance.model.basemodel.FragmentBankModel;
 import com.bibinet.finance.utils.HttpUtils;
@@ -11,6 +13,7 @@ import org.xutils.x;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by bibinet on 2017-4-20.
@@ -62,5 +65,6 @@ public class FragmentBankModelImp implements FragmentBankModel {
                 listioner.onFailed(throwable.getMessage());
             }
         });
+
     }
 }

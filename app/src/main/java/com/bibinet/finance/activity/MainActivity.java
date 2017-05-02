@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static RelativeLayout[] mTabs;
     private String logintype;
     private FragmentOperation fragementOperation;
-    private FragmentMy fragementMy;
+    private FragmentLogin fragementMy;
     private int index;
     public static int currentTabIndex;
     private long mPressedTime=0;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         fragementHome = new FragmentHome();
         fragmentCompany = new FragmentCompany();
         fragmentBank=new FragmentBank();
-        fragementMy = new FragmentMy();
+        fragementMy = new FragmentLogin();
         fragementOperation=new FragmentOperation();
         fragementmore = new FragmentMore();
         fragments = new Fragment[]{fragementHome, fragementMy, fragementmore};

@@ -59,6 +59,7 @@ public class FragmentBank extends Fragment implements FragmentBankView{
     private void loadData(boolean isLoadMore) {
         fragmentBankPresenterImp=new FragmentBankPresenterImp(this,isLoadMore);
         fragmentBankPresenterImp.LoadData("https://api.tianapi.com/guonei/?key",1);
+
     }
 
     private void initView() {

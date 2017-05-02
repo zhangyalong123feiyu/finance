@@ -192,11 +192,6 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
         mTabs[0].setSelected(true);
         mTabsTop[0].setSelected(true);
     }
-/*
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return gestureListioner.onTouchEvent(event);
-    }*/
 
     private void setListener() {
         folatbutton.setOnClickListener(new View.OnClickListener() {

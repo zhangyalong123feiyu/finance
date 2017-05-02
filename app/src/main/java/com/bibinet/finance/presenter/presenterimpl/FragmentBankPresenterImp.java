@@ -1,5 +1,7 @@
 package com.bibinet.finance.presenter.presenterimpl;
 
+import android.content.Context;
+
 import com.bibinet.finance.bean.SocailBean;
 import com.bibinet.finance.model.basemodel.FragmentBankModel;
 import com.bibinet.finance.model.modelimple.FragmentBankModelImp;
@@ -23,7 +25,7 @@ public class FragmentBankPresenterImp implements FragmentBankPresenter {
     }
 
     @Override
-    public void LoadData(String url, int page) {
+    public void LoadData( String url, int page) {
 
         fragmentBankModelImp.loadData(url, page, new FragmentBankModel.FragmentBankModelListioner() {
             @Override
@@ -31,11 +33,11 @@ public class FragmentBankPresenterImp implements FragmentBankPresenter {
                 fragmentBankView.showData(socailInfo,isLoadMore);
                 fragmentBankView.hideProgress();
             }
-
             @Override
             public void onFailed(String error) {
                 fragmentBankView.showLoadFailed(error);
             }
         });
+
     }
 }
