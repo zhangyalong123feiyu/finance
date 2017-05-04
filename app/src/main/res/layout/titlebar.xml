@@ -25,9 +25,9 @@
         android:id="@+id/title_imageleft"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:src="@mipmap/back"
         android:visibility="gone"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginLeft="20dp"/>
 </RelativeLayout>

@@ -10,7 +10,34 @@
     <string name="sucess">成功案例</string>
     <string name="brand">旗下品牌</string>
     <string name="histroytitle">历史记录</string>
+    <string name="projectname">项目名称:</string>
+    <string name="guranteemoney">担保押金:</string>
+    <string name="contactperson">联系人:</string>
+    <string name="contactphone">联系电话:</string>
+    <string name="isthreecerifte">是否三证合一:</string>
+    <string name="threecerifte">三证合一:</string>
+    <string name="businesslicense">营业执照:</string>
+    <string name="organcode">组织机构代码:</string>
+    <string name="taxrigision">税务登记:</string>
+    <string name="openaccountlicense">开户许可:</string>
+    <string name="qualificationprofile">资质证明文件:</string>
+    <string name="bidderbook">投标人委托书:</string>
+    <string name="lagelprobook">法人证明书:</string>
+    <string name="lagelpersoncard">法人身份证:</string>
+    <string name="ishasentrustbook">是否有委托授权书:</string>
+    <string name="accerditentrustbook">授权委托人证明书:</string>
+    <string name="accerditentrustcard">授权委托人身份证:</string>
 
+
+
+    <string name="a_name">挑战者联盟</string>
+    <string name="b_name">老九门，再探古墓</string>
+    <string name="c_name">红色通道，刘烨归来</string>
+    <string name="d_name">神犬小七第二季</string>
+    <string name="e_name">灭罪师</string>
+
+    <string name="common_text">测试普通View轮播</string>
+    <string name="scroll_text">测试ScrollView轮播</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

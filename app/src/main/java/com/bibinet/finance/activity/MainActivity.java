@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bibinet.finance.R;
+import com.bibinet.finance.utils.SharedPresUtils;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
@@ -44,25 +45,25 @@ public class MainActivity extends AppCompatActivity {
     private FragmentMore fragementmore;
     public static Fragment[] fragments;
     public static RelativeLayout[] mTabs;
-    private String logintype;
     private FragmentOperation fragementOperation;
     private FragmentLogin fragementMy;
     private int index;
     public static int currentTabIndex;
     private long mPressedTime=0;
+    private String accountType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        StatusBarUtil.setColor(MainActivity.this, Color.argb(255,127, 255, 212),0);
+      //  StatusBarUtil.setColor(MainActivity.this, Color.argb(255,127, 255, 212),0);
+        StatusBarUtil.setTranslucent(this);
         ButterKnife.bind(this);
         initView();
     }
 
     private void initView() {
-        SharedPreferences sharedPreferences=getSharedPreferences("LoginType",MODE_PRIVATE);
-        logintype = sharedPreferences.getString("longintype", "0");
+        accountType=SharedPresUtils.getsSharedPresUtils(this).getString("AccountType","0");
         fragementHome = new FragmentHome();
         fragmentCompany = new FragmentCompany();
         fragmentBank=new FragmentBank();
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         mTabs[2] = (RelativeLayout) findViewById(R.id.bottommore);
         // 把第一个tab设为选中状态
         mTabs[0].setSelected(true);
-        switch (Integer.parseInt(logintype)) {
+        switch (Integer.parseInt(accountType)) {
             case 0:
                 noLogin();
                 break;

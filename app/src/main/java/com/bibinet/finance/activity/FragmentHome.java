@@ -29,6 +29,7 @@ import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.view.FragmentHomeView;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
+import com.jaeger.library.StatusBarUtil;
 import com.zhy.autolayout.utils.AutoUtils;
 import com.zhy.autolayout.utils.DimenUtils;
 

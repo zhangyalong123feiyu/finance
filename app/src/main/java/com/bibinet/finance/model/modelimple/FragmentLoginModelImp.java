@@ -1,9 +1,11 @@
 package com.bibinet.finance.model.modelimple;
 
+import com.bibinet.finance.bean.LoginResultBean;
 import com.bibinet.finance.constant.ProjectUrl;
 import com.bibinet.finance.model.basemodel.FragmentLoginModel;
 import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.utils.MyCallBack;
+import com.google.gson.Gson;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -23,7 +25,9 @@ public class FragmentLoginModelImp implements FragmentLoginModel {
             @Override
             public void onSuccess(String s) {
                 super.onSuccess(s);
-                listioner.onLoginSucess();
+                Gson gson=new Gson();
+                LoginResultBean LoginInfo = gson.fromJson(s, LoginResultBean.class);
+                listioner.onLoginSucess(LoginInfo);
                 LogUtils.getLogInstance().logMessage(s+"-----------------");
             }
             @Override

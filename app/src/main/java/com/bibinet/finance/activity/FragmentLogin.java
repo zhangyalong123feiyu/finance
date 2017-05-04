@@ -1,12 +1,11 @@
 package com.bibinet.finance.activity;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bibinet.finance.R;
+import com.bibinet.finance.bean.LoginResultBean;
 import com.bibinet.finance.presenter.presenterimpl.FragmentBankPresenterImp;
 import com.bibinet.finance.presenter.presenterimpl.FragmentLoginPresenterImp;
 import com.bibinet.finance.utils.LogUtils;
+import com.bibinet.finance.utils.PhoneNumberUtils;
+import com.bibinet.finance.utils.ProgressDialogUtils;
+import com.bibinet.finance.utils.SharedPresUtils;
+import com.bibinet.finance.utils.ToastUtils;
 import com.bibinet.finance.view.FragmentLoginView;
+import com.zhy.autolayout.utils.DimenUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +66,7 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
     private View view;
     private Unbinder unbind;
     private FragmentLoginPresenterImp presenterImp;
+    private ProgressDialogUtils dialogUtils;
 
     public FragmentLogin() {
 
@@ -101,12 +107,15 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
             case R.id.inputexacode:
                 break;
             case R.id.btn_login:
-                Toast.makeText(getActivity(),"登录",Toast.LENGTH_LONG).show();
+                ((MainActivity)getActivity()).companyLogin();
                 String number=inputphoneNumber.getText().toString().trim();
-                LogUtils.getLogInstance().logMessage(number);
-                presenterImp.onLoadData(number,"3","3");
-                SharedPreferences sharedPreferences=getActivity().getSharedPreferences("LoginType", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                	if (TextUtils.isEmpty(number)) {
+                        ToastUtils.getToastUtils().ToastMsg(getActivity(),"手机号不能为空");
+                			} else if(PhoneNumberUtils.isMobileNumber(number)){
+                        presenterImp.onLoadData(number,"3","3");
+                			}else {
+                        ToastUtils.getToastUtils().ToastMsg(getActivity(),"请输入正确的手机号");
+                    }
             case R.id.txt_service:
                 break;
         }
@@ -114,28 +123,38 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
 
     @Override
     public void showProgress() {
-
+        dialogUtils=new ProgressDialogUtils();
+        dialogUtils.showProgressDialog(getActivity());
     }
 
     @Override
     public void hideProgress() {
-
+        ToastUtils.getToastUtils().ToastMsg(getActivity(),"yingchang");
+        dialogUtils.hideProgressDialgo();
     }
-
-    @Override
-    public void showData() {
-        Toast.makeText(getActivity(),"成功",Toast.LENGTH_LONG).show();
-    }
-
     @Override
     public void showLoadFailed(String messge) {
-	switch (Integer.getInteger(messge)) {
-			case 77777777:
-                Toast.makeText(getActivity(),"提交信息错误",Toast.LENGTH_SHORT).show();
-				break;
 
-			default:
-				break;
-			}
     }
+
+    @Override
+    public void showData(LoginResultBean LoginInfo) {
+        String resultCode = LoginInfo.getResultCode();
+        	switch (Integer.parseInt(resultCode)) {
+        			case 00000000:
+                        ((MainActivity)getActivity()).companyLogin();
+                        SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
+                        initBottomSelect();
+        				break;
+        			case 77777777:
+                            Toast.makeText(getActivity(),"提交数据错误",Toast.LENGTH_SHORT).show();
+                        dialogUtils.hideProgressDialgo();
+        				break;
+
+        			default:
+        				break;
+        			}
+    }
+
+
 }
