@@ -17,7 +17,7 @@ import org.xutils.x;
 public class FragmentLoginModelImp implements FragmentLoginModel {
     @Override
     public void Longin(String mobileNum, String deveceCode, String accountType, final OnLoginListioner listioner) {
-        RequestParams requestParams=new RequestParams("http://192.168.1.63:8080/app/user/login.json");
+        RequestParams requestParams=new RequestParams(ProjectUrl.LoginUrl);
         requestParams.addBodyParameter("mobilePhone",mobileNum);
         requestParams.addBodyParameter("uniDeviceCode",deveceCode);
         requestParams.addBodyParameter("accountType",accountType);

@@ -9,6 +9,6 @@ public class ProjectUrl {
             "http://m.xxxiao.com/wp-content/uploads/sites/3/2015/04/m.xxxiao.com_dd10e91fcb9dd240038ae0bf7609944e-760x500.jpg",
             "http://m.xxxiao.com/wp-content/uploads/sites/3/2015/04/m.xxxiao.com_60062ba95a4dd80a711e82cdf57dc5ab-760x500.jpg"
     };
-    public static final String BaseUrl="http://192.168.1.63:8080/app/";
-    public static final String LoginUrl=BaseUrl+"user/login.json";
+  //  public static final String BaseUrl="http://192.168.1.63:8080/app/";
+    public static final String LoginUrl=JNI.getSerVerUrl()+"user/login.json";
 }
