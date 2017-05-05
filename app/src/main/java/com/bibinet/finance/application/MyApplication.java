@@ -1,6 +1,7 @@
 package com.bibinet.finance.application;
 
 import android.app.Application;
+import android.content.Context;
 
 import org.xutils.x;
 

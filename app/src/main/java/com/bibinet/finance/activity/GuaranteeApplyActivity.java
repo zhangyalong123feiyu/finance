@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bibinet.finance.R;
 import com.bibinet.finance.utils.DialogUtils;
+import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.utils.ToastUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -181,15 +182,26 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private TextView camera;
     private TextView picstorage;
 
-    private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
-    private static final int PHOTO_REQUEST_CAMERA = 3;
+    private static final String PHOTO_THREE_NAME = "threepic.jpg";//三证合一
+    private static final String PHOTO_BUSINESS_NAME = "businesspic.jpg";//营业执照
+    private static final String PHOTO_ORGANCODE_NAME = "organcodepic.jpg";//组织代码
+    private static final String PHOTO_TAXRIGISON_NAME = "taxrigisonpic.jpg";//税务登记
+    private static final String PHOTO_OPENACCOUNT_NAME = "openaccountpic.jpg";//开户
+    private static final String PHOTO_QUALIFICATION_NAME = "qualificationpic.jpg";//资质证明
+    private static final String PHOTO_BIDDER_NAME = "bidderpic.jpg";//投标书
+    private static final String PHOTO_LEGALPROBOOK_NAME = "legalprobookpic.jpg";//法人证明书
+    private static final String PHOTO_LEGALPERSONCARD_NAME = "legalpersonpic.jpg";//法人身份证
+    private static final String PHOTO_ACEERENTRUSTBOOK_NAME = "accerentrustbookpic.jpg";//授权委托书
+    private static final String PHOTO_ACEERENTRUSCARD_NAME = "accerentrustcardpic.jpg";//授权委托人身份证
+    private static final int PHOTO_REQUEST_CAMERA = 3;//相机
     private static final int REQUESTCODE_CUTTING = 2;
-    private static final int REQUESTCODE_PICK = 1;
+    private static final int REQUESTCODE_PICK = 1;//图库
     private static final int ACOUNT_REQUEST = 4;
 
     private File tempFile;
     private int TYPE = 11;
     private Bitmap photo;
+    private File businesspic;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -212,7 +224,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
 
     }
 
-    @OnClick({R.id.title_imageleft, R.id.radiobtnisthree, R.id.radiobtnnothree,R.id.takepic_ivthreecetifte,R.id.takepic_businesslicense,R.id.takepic_ivorgancode,R.id.takepic_ivtaxrigsion,R.id.takepic_ivopenaccountlicense,R.id.takepic_ivqualificationprofile,R.id.takepic_ivbidderbook,R.id.takepic_ivlagelprobook,R.id.takepic_ivlagelpersoncard,R.id.accerditentrustbook,R.id.takepic_ivaccerditentrustcard,R.id.rela_businesslicense, R.id.rela_taxrigsion, R.id.rela_openaccountlicense, R.id.rela_qualificationprofile, R.id.rela_bidderbook, R.id.rela_accerditentrustcard})
+    @OnClick({R.id.title_imageleft, R.id.radiobtnisthree, R.id.radiobtnnothree,R.id.radiobtnishas,R.id.radiobtnnothas,R.id.takepic_ivthreecetifte,R.id.takepic_businesslicense,R.id.takepic_ivorgancode,R.id.takepic_ivtaxrigsion,R.id.takepic_ivopenaccountlicense,R.id.takepic_ivqualificationprofile,R.id.takepic_ivbidderbook,R.id.takepic_ivlagelprobook,R.id.takepic_ivlagelpersoncard,R.id.accerditentrustbook,R.id.takepic_ivaccerditentrustcard,R.id.rela_businesslicense, R.id.rela_taxrigsion, R.id.rela_openaccountlicense, R.id.rela_qualificationprofile, R.id.rela_bidderbook, R.id.rela_accerditentrustcard})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -308,9 +320,23 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         // 判断存储卡是否可以用，可用进行存储
         if (hasSdcard()) {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    Uri.fromFile(new File(Environment
-                            .getExternalStorageDirectory(), PHOTO_FILE_NAME)));
+        	switch (TYPE) {
+        			case 11:
+                        File threePic = new File(Environment.getExternalStorageDirectory(), PHOTO_THREE_NAME);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(threePic));
+                        tempFile=threePic;
+        				break;
+        			case 12:
+                         businesspic = new File(Environment.getExternalStorageDirectory(), PHOTO_BUSINESS_NAME);
+                        LogUtils.getLogInstance().logMessage(businesspic.length()+"文件大小");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(businesspic));
+//                        tempFile=businesspic;
+        				break;
+
+
+        			default:
+        				break;
+        			}
         }
         startActivityForResult(intent, PHOTO_REQUEST_CAMERA);
     }
@@ -318,7 +344,6 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         switch (requestCode) {
             //从图库选择
             case REQUESTCODE_PICK:
@@ -330,9 +355,9 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
             //拍照
             case PHOTO_REQUEST_CAMERA:
                 if (hasSdcard()) {
-                    tempFile = new File(Environment.getExternalStorageDirectory(),
-                            PHOTO_FILE_NAME);
-                    startPhotoZoom(Uri.fromFile(tempFile));
+                    if (businesspic!=null) {
+                        startPhotoZoom(Uri.fromFile(businesspic));
+                    }
                 } else {
                     Toast.makeText(GuaranteeApplyActivity.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                 }
