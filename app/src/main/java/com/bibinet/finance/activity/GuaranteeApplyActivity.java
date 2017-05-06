@@ -201,7 +201,6 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private File tempFile;
     private int TYPE = 11;
     private Bitmap photo;
-    private File businesspic;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -327,13 +326,50 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                         tempFile=threePic;
         				break;
         			case 12:
-                         businesspic = new File(Environment.getExternalStorageDirectory(), PHOTO_BUSINESS_NAME);
-                        LogUtils.getLogInstance().logMessage(businesspic.length()+"文件大小");
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(businesspic));
-//                        tempFile=businesspic;
+                      File businesspic = new File(Environment.getExternalStorageDirectory(), PHOTO_BUSINESS_NAME);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(businesspic));
+                        tempFile=businesspic;
         				break;
-
-
+                case 13:
+                    File origanpic = new File(Environment.getExternalStorageDirectory(), PHOTO_ORGANCODE_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(origanpic));
+                    tempFile=origanpic;
+                    break;
+                case 14:
+                    File taxrigisonpic = new File(Environment.getExternalStorageDirectory(), PHOTO_TAXRIGISON_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(taxrigisonpic));
+                    tempFile=taxrigisonpic;
+                    break;
+                case 15:
+                    File openaccountpic = new File(Environment.getExternalStorageDirectory(), PHOTO_OPENACCOUNT_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(openaccountpic));
+                    tempFile=openaccountpic;
+                    break;
+                case 16:
+                    File qulifacitonpic = new File(Environment.getExternalStorageDirectory(), PHOTO_QUALIFICATION_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(qulifacitonpic));
+                    tempFile=qulifacitonpic;
+                    break;
+                case 17:
+                    File bidderpic = new File(Environment.getExternalStorageDirectory(), PHOTO_BIDDER_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(bidderpic));
+                    tempFile=bidderpic;
+                    break;
+                case 18:
+                    File legalprobookpic = new File(Environment.getExternalStorageDirectory(), PHOTO_LEGALPROBOOK_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(legalprobookpic));
+                    tempFile=legalprobookpic;
+                    break;
+                case 19:
+                    File accerentrustbookpic = new File(Environment.getExternalStorageDirectory(), PHOTO_ACEERENTRUSTBOOK_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(accerentrustbookpic));
+                    tempFile=accerentrustbookpic;
+                    break;
+                case 20:
+                    File accerentrustcardpic = new File(Environment.getExternalStorageDirectory(), PHOTO_ACEERENTRUSCARD_NAME);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(accerentrustcardpic));
+                    tempFile=accerentrustcardpic;
+                    break;
         			default:
         				break;
         			}
@@ -355,17 +391,16 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
             //拍照
             case PHOTO_REQUEST_CAMERA:
                 if (hasSdcard()) {
-                    if (businesspic!=null) {
-                        startPhotoZoom(Uri.fromFile(businesspic));
-                    }
-                } else {
+                    if (tempFile!=null) {
+                        startPhotoZoom(Uri.fromFile(tempFile));
+
+                } else {  }
                     Toast.makeText(GuaranteeApplyActivity.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             //裁剪图片
             case REQUESTCODE_CUTTING:
                 if (data != null) {
-                    //    setPicToView(data);
                     Bundle extras = data.getExtras();
                     if (extras != null) {
                          photo = extras.getParcelable("data");
