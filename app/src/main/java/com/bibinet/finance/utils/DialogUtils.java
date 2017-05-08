@@ -12,13 +12,14 @@ import android.view.View;
 public class DialogUtils {
     private DialogListioner dialogListioner;
     private View view;
+    private AlertDialog dialog;
 
     public View getView(){
        return view;
     }
     public void diloagShow(Context context, int ResuoreceId){
         AlertDialog.Builder dialogBuider=new AlertDialog.Builder(context);
-        AlertDialog dialog = dialogBuider.create();
+         dialog = dialogBuider.create();
          view= LayoutInflater.from(context).inflate(ResuoreceId,null);
         dialog.show();
         dialog.setContentView(view);
@@ -29,6 +30,9 @@ public class DialogUtils {
             }
         });
 
+    }
+    public void dialogDismiss(){
+        dialog.dismiss();
     }
     public void setDialoglistioner(DialogListioner listioner){
         this.dialogListioner=listioner;

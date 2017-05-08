@@ -107,7 +107,8 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
             case R.id.inputexacode:
                 break;
             case R.id.btn_login:
-                ((MainActivity)getActivity()).companyLogin();
+                ((MainActivity)getActivity()).companyLogin();//调试
+                initBottomSelect();//调试
                 String number=inputphoneNumber.getText().toString().trim();
                 	if (TextUtils.isEmpty(number)) {
                         ToastUtils.getToastUtils().ToastMsg(getActivity(),"手机号不能为空");

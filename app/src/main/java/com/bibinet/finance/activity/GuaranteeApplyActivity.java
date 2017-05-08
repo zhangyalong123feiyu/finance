@@ -1,6 +1,7 @@
 package com.bibinet.finance.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,8 +25,12 @@ import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.utils.ToastUtils;
 
+import org.xutils.x;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -201,6 +206,8 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private File tempFile;
     private int TYPE = 11;
     private Bitmap photo;
+    private List picPathList=new ArrayList();
+    private String pathImage;//相册中选中图片的path
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -211,10 +218,6 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
 //        setListener();
     }
 
- /*   private void setListener() {
-        ivthreecetifteDelete.setOnClickListener(this);
-        ivbusinesslicenseDelete.setOnClickListener(this);
-    }*/
 
     private void initView() {
         title.setText("申请保函");
@@ -307,9 +310,24 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                 @Override
                 public void onClick(View v) {
                     selectPicFromCamera();
+                    dialogUtils.dialogDismiss();
+                }
+            });
+            picstorage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectPicFromGallery();
+                    dialogUtils.dialogDismiss();
                 }
             });
         }
+    }
+/*
+* 从相册选着图片
+* */
+    private void selectPicFromGallery() {
+        Intent intent1 = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);// 图片的存储路径
+        startActivityForResult(intent1, REQUESTCODE_PICK);
     }
 
     /**
@@ -320,12 +338,12 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         // 判断存储卡是否可以用，可用进行存储
         if (hasSdcard()) {
         	switch (TYPE) {
-        			case 11:
+                case 11:
                         File threePic = new File(Environment.getExternalStorageDirectory(), PHOTO_THREE_NAME);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(threePic));
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(threePic));
                         tempFile=threePic;
         				break;
-        			case 12:
+                case 12:
                       File businesspic = new File(Environment.getExternalStorageDirectory(), PHOTO_BUSINESS_NAME);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(businesspic));
                         tempFile=businesspic;
@@ -386,15 +404,15 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                 if (data == null || data.getData() == null) {
                     return;
                 }
-                startPhotoZoom(data.getData());
+                    startPhotoZoom(data.getData());
                 break;
             //拍照
             case PHOTO_REQUEST_CAMERA:
                 if (hasSdcard()) {
                     if (tempFile!=null) {
                         startPhotoZoom(Uri.fromFile(tempFile));
-
-                } else {  }
+                }
+                }else {
                     Toast.makeText(GuaranteeApplyActivity.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -406,6 +424,16 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                          photo = extras.getParcelable("data");
                         setPhoto(photo);
                     }
+                    Uri uri = data.getData();
+                    // 查询选择图片
+                    Cursor cursor = getContentResolver().query(uri,
+                            new String[] { MediaStore.Images.Media.DATA }, null,
+                            null, null);
+                    // 光标移动至开头 获取图片路径
+                    cursor.moveToFirst();
+                    pathImage = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Images.Media.DATA));
+                    picPathList.add(pathImage);
                 }
                 break;
 
@@ -500,7 +528,6 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         intent.putExtra("noFaceDetection", true);
         startActivityForResult(intent, REQUESTCODE_CUTTING);
     }
-
 
     private boolean hasSdcard() {
         if (Environment.getExternalStorageState().equals(
