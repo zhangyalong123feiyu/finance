@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bibinet.finance.R;
 import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.utils.LogUtils;
+import com.bibinet.finance.utils.PicUpLoadUtils;
 import com.bibinet.finance.utils.ToastUtils;
 
 import org.xutils.x;
@@ -186,28 +187,15 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private DialogUtils dialogUtils;
     private TextView camera;
     private TextView picstorage;
-
-    private static final String PHOTO_THREE_NAME = "threepic.jpg";//三证合一
-    private static final String PHOTO_BUSINESS_NAME = "businesspic.jpg";//营业执照
-    private static final String PHOTO_ORGANCODE_NAME = "organcodepic.jpg";//组织代码
-    private static final String PHOTO_TAXRIGISON_NAME = "taxrigisonpic.jpg";//税务登记
-    private static final String PHOTO_OPENACCOUNT_NAME = "openaccountpic.jpg";//开户
-    private static final String PHOTO_QUALIFICATION_NAME = "qualificationpic.jpg";//资质证明
-    private static final String PHOTO_BIDDER_NAME = "bidderpic.jpg";//投标书
-    private static final String PHOTO_LEGALPROBOOK_NAME = "legalprobookpic.jpg";//法人证明书
-    private static final String PHOTO_LEGALPERSONCARD_NAME = "legalpersonpic.jpg";//法人身份证
-    private static final String PHOTO_ACEERENTRUSTBOOK_NAME = "accerentrustbookpic.jpg";//授权委托书
-    private static final String PHOTO_ACEERENTRUSCARD_NAME = "accerentrustcardpic.jpg";//授权委托人身份证
     private static final int PHOTO_REQUEST_CAMERA = 3;//相机
     private static final int REQUESTCODE_CUTTING = 2;
     private static final int REQUESTCODE_PICK = 1;//图库
-    private static final int ACOUNT_REQUEST = 4;
 
-    private File tempFile;
     private int TYPE = 11;
     private Bitmap photo;
     private List picPathList=new ArrayList();
     private String pathImage;//相册中选中图片的path
+    private PicUpLoadUtils upLoadUtils;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -218,11 +206,11 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
 //        setListener();
     }
 
-
     private void initView() {
         title.setText("申请保函");
         titleImageleft.setVisibility(View.VISIBLE);
         dialogUtils = new DialogUtils();
+         upLoadUtils=new PicUpLoadUtils(GuaranteeApplyActivity.this);
 
     }
 
@@ -309,93 +297,19 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
             camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectPicFromCamera();
+                    upLoadUtils.selectPicFromCamera();
                     dialogUtils.dialogDismiss();
                 }
             });
             picstorage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectPicFromGallery();
+                    upLoadUtils.selectPicFromGallery();
                     dialogUtils.dialogDismiss();
                 }
             });
         }
     }
-/*
-* 从相册选着图片
-* */
-    private void selectPicFromGallery() {
-        Intent intent1 = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);// 图片的存储路径
-        startActivityForResult(intent1, REQUESTCODE_PICK);
-    }
-
-    /**
-     * 照相获取图片
-     */
-    protected void selectPicFromCamera() {
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        // 判断存储卡是否可以用，可用进行存储
-        if (hasSdcard()) {
-        	switch (TYPE) {
-                case 11:
-                        File threePic = new File(Environment.getExternalStorageDirectory(), PHOTO_THREE_NAME);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(threePic));
-                        tempFile=threePic;
-        				break;
-                case 12:
-                      File businesspic = new File(Environment.getExternalStorageDirectory(), PHOTO_BUSINESS_NAME);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(businesspic));
-                        tempFile=businesspic;
-        				break;
-                case 13:
-                    File origanpic = new File(Environment.getExternalStorageDirectory(), PHOTO_ORGANCODE_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(origanpic));
-                    tempFile=origanpic;
-                    break;
-                case 14:
-                    File taxrigisonpic = new File(Environment.getExternalStorageDirectory(), PHOTO_TAXRIGISON_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(taxrigisonpic));
-                    tempFile=taxrigisonpic;
-                    break;
-                case 15:
-                    File openaccountpic = new File(Environment.getExternalStorageDirectory(), PHOTO_OPENACCOUNT_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(openaccountpic));
-                    tempFile=openaccountpic;
-                    break;
-                case 16:
-                    File qulifacitonpic = new File(Environment.getExternalStorageDirectory(), PHOTO_QUALIFICATION_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(qulifacitonpic));
-                    tempFile=qulifacitonpic;
-                    break;
-                case 17:
-                    File bidderpic = new File(Environment.getExternalStorageDirectory(), PHOTO_BIDDER_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(bidderpic));
-                    tempFile=bidderpic;
-                    break;
-                case 18:
-                    File legalprobookpic = new File(Environment.getExternalStorageDirectory(), PHOTO_LEGALPROBOOK_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(legalprobookpic));
-                    tempFile=legalprobookpic;
-                    break;
-                case 19:
-                    File accerentrustbookpic = new File(Environment.getExternalStorageDirectory(), PHOTO_ACEERENTRUSTBOOK_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(accerentrustbookpic));
-                    tempFile=accerentrustbookpic;
-                    break;
-                case 20:
-                    File accerentrustcardpic = new File(Environment.getExternalStorageDirectory(), PHOTO_ACEERENTRUSCARD_NAME);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(accerentrustcardpic));
-                    tempFile=accerentrustcardpic;
-                    break;
-        			default:
-        				break;
-        			}
-        }
-        startActivityForResult(intent, PHOTO_REQUEST_CAMERA);
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -404,14 +318,24 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                 if (data == null || data.getData() == null) {
                     return;
                 }
-                    startPhotoZoom(data.getData());
+                Uri uri = data.getData();
+                // 查询选择图片
+                Cursor cursor = getContentResolver().query(uri,
+                        new String[] { MediaStore.Images.Media.DATA }, null,
+                        null, null);
+                // 光标移动至开头 获取图片路径
+                cursor.moveToFirst();
+                pathImage = cursor.getString(cursor
+                        .getColumnIndex(MediaStore.Images.Media.DATA));
+                picPathList.add(pathImage);
+                upLoadUtils.startPhotoZoom(data.getData());
                 break;
             //拍照
             case PHOTO_REQUEST_CAMERA:
-                if (hasSdcard()) {
-                    if (tempFile!=null) {
-                        startPhotoZoom(Uri.fromFile(tempFile));
-                }
+                if (upLoadUtils.hasSdcard()) {
+                    if (upLoadUtils.tempFile!=null) {
+                        upLoadUtils.startPhotoZoom(Uri.fromFile(upLoadUtils.tempFile));
+                    }
                 }else {
                     Toast.makeText(GuaranteeApplyActivity.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                 }
@@ -421,19 +345,10 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                 if (data != null) {
                     Bundle extras = data.getExtras();
                     if (extras != null) {
-                         photo = extras.getParcelable("data");
+                        photo = extras.getParcelable("data");
                         setPhoto(photo);
                     }
-                    Uri uri = data.getData();
-                    // 查询选择图片
-                    Cursor cursor = getContentResolver().query(uri,
-                            new String[] { MediaStore.Images.Media.DATA }, null,
-                            null, null);
-                    // 光标移动至开头 获取图片路径
-                    cursor.moveToFirst();
-                    pathImage = cursor.getString(cursor
-                            .getColumnIndex(MediaStore.Images.Media.DATA));
-                    picPathList.add(pathImage);
+
                 }
                 break;
 
@@ -442,69 +357,37 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
     private void setPhoto(Bitmap pic) {
         switch (TYPE) {
             case 11:
-                ivthreecetifte.setImageBitmap(pic);
-                ivthreecetifte.setVisibility(View.VISIBLE);
-                takepicIvthreecetifte.setVisibility(View.GONE);
-                ivthreecetifteDelete.setVisibility(View.VISIBLE);
-                ivthreecetifte.setOnClickListener(this);
+                upLoadUtils.hideOrShow(ivthreecetifte,takepicIvthreecetifte,ivthreecetifteDelete,pic);
                 break;
             case 12:
-                ivbusinesslicense.setImageBitmap(pic);
-                ivbusinesslicense.setVisibility(View.VISIBLE);
-                takepicbusinesslicense.setVisibility(View.GONE);
-                ivbusinesslicenseDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivbusinesslicense,takepicbusinesslicense,ivbusinesslicenseDelete,pic);
                 break;
             case 13:
-                ivorgancode.setImageBitmap(pic);
-                ivorgancode.setVisibility(View.VISIBLE);
-                takepicIvorgancode.setVisibility(View.GONE);
-                ivorgancodeDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivorgancode,takepicIvorgancode,ivorgancodeDelete,pic);
                 break;
             case 14:
-                ivtaxrigsion.setImageBitmap(pic);
-                ivtaxrigsion.setVisibility(View.VISIBLE);
-                takepicIvtaxrigsion.setVisibility(View.GONE);
-                ivtaxrigsionDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivtaxrigsion,takepicIvtaxrigsion,ivtaxrigsionDelete,pic);
                 break;
             case 15:
-                ivopenaccountlicense.setImageBitmap(pic);
-                ivopenaccountlicense.setVisibility(View.VISIBLE);
-                takepicIvopenaccountlicense.setVisibility(View.GONE);
-                ivopenaccountlicenseDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivopenaccountlicense,takepicIvopenaccountlicense,ivopenaccountlicenseDelete,pic);
                 break;
             case 16:
-                ivqualificationprofile.setImageBitmap(pic);
-                ivqualificationprofile.setVisibility(View.VISIBLE);
-                takepicIvqualificationprofile.setVisibility(View.GONE);
-                ivqualificationprofileDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivqualificationprofile,takepicIvqualificationprofile,ivqualificationprofileDelete,pic);
                 break;
             case 17:
-                ivbusinesslicense.setImageBitmap(pic);
-                ivbusinesslicense.setVisibility(View.VISIBLE);
-                takepicIvorgancode.setVisibility(View.GONE);
-                ivorgancodeDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivbusinesslicense,takepicIvorgancode,ivorgancodeDelete,pic);
                 break;
             case 18:
-                ivbusinesslicense.setImageBitmap(pic);
-                ivorgancode.setVisibility(View.VISIBLE);
-                takepicIvorgancode.setVisibility(View.GONE);
-                ivorgancodeDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivbusinesslicense,ivorgancode,ivorgancodeDelete,pic);
                 break;
             case 19:
-                ivbusinesslicense.setImageBitmap(pic);
-                ivorgancode.setVisibility(View.VISIBLE);
-                takepicIvorgancode.setVisibility(View.GONE);
-                ivorgancodeDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivbusinesslicense,ivorgancode,ivorgancodeDelete,pic);
                 break;
             case 20:
-                ivbusinesslicense.setImageBitmap(pic);
-                ivorgancode.setVisibility(View.VISIBLE);
-                takepicIvorgancode.setVisibility(View.GONE);
-                ivorgancodeDelete.setVisibility(View.VISIBLE);
+                upLoadUtils.hideOrShow(ivorgancode,takepicIvorgancode,ivorgancodeDelete,pic);
                 break;
 
             default:
@@ -512,86 +395,38 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    // 开始裁剪相片
-    public void startPhotoZoom(Uri uri) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        // 设置宽高比例
-        intent.putExtra("crop", true);
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // 设置裁剪图片宽高
-        intent.putExtra("outputX", 300);
-        intent.putExtra("outputY", 300);
-        // 广播刷新相册
-        intent.putExtra("return-data", true);
-        intent.putExtra("noFaceDetection", true);
-        startActivityForResult(intent, REQUESTCODE_CUTTING);
-    }
-
-    private boolean hasSdcard() {
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivthreecetifte_delete:
-                ivthreecetifte.setVisibility(View.GONE);
-                takepicIvthreecetifte.setVisibility(View.VISIBLE);
-                ivthreecetifteDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivthreecetifte,takepicIvthreecetifte,ivthreecetifteDelete);
                 break;
             case R.id.ivbusinesslicense_delete:
-                ivbusinesslicense.setVisibility(View.GONE);
-                takepicbusinesslicense.setVisibility(View.VISIBLE);
-                ivbusinesslicenseDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivbusinesslicense,takepicbusinesslicense,ivbusinesslicenseDelete);
                 break;
             case R.id.ivorgancode_delete:
-                ivorgancode.setVisibility(View.GONE);
-                takepicIvorgancode.setVisibility(View.VISIBLE);
-                ivorgancodeDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivorgancode,takepicIvorgancode,ivorgancodeDelete);
                 break;
             case R.id.ivtaxrigsion_delete:
-                ivtaxrigsion.setVisibility(View.GONE);
-                takepicIvtaxrigsion.setVisibility(View.VISIBLE);
-                ivtaxrigsionDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivtaxrigsion,takepicIvtaxrigsion,ivtaxrigsionDelete);
                 break;
             case R.id.ivopenaccountlicense_delete:
-                ivopenaccountlicense.setVisibility(View.GONE);
-                takepicIvopenaccountlicense.setVisibility(View.VISIBLE);
-                ivopenaccountlicenseDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivopenaccountlicense,takepicIvopenaccountlicense,ivopenaccountlicenseDelete);
                 break;
             case R.id.ivqualificationprofile_delete:
-                ivqualificationprofile.setVisibility(View.GONE);
-                takepicIvqualificationprofile.setVisibility(View.VISIBLE);
-                ivqualificationprofileDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivqualificationprofile,takepicIvqualificationprofile,ivqualificationprofileDelete);
                 break;
-
             case R.id.ivlagelprobook_delete:
-                ivlagelprobook.setVisibility(View.GONE);
-                takepicIvlagelprobook.setVisibility(View.VISIBLE);
-                ivlagelprobookDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivlagelprobook,takepicIvlagelprobook,ivlagelprobookDelete);
                 break;
             case R.id.ivlagelpersoncard_delete:
-                ivlagelpersoncard.setVisibility(View.GONE);
-                takepicIvlagelpersoncard.setVisibility(View.VISIBLE);
-                ivlagelpersoncardDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivlagelpersoncard,takepicIvlagelpersoncard,ivlagelpersoncardDelete);
                 break;
             case R.id.ivaccerditentrustbook_delete:
-                ivaccerditentrustbook.setVisibility(View.GONE);
-                takepicIvaccerditentrustbook.setVisibility(View.VISIBLE);
-                ivaccerditentrustbook.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivaccerditentrustbook,takepicIvaccerditentrustbook,ivaccerditentrustbook);
                 break;
             case R.id.ivaccerditentrustcard_delete:
-                ivaccerditentrustcard.setVisibility(View.GONE);
-                takepicIvaccerditentrustcard.setVisibility(View.VISIBLE);
-                ivaccerditentrustcardDelete.setVisibility(View.GONE);
+                upLoadUtils.hideOrShow(ivaccerditentrustcard,takepicIvaccerditentrustcard,ivaccerditentrustcardDelete);
                 break;
             case R.id.ivthreecetifte:
                 Intent intent =new Intent(GuaranteeApplyActivity.this,BigPicActivity.class);
