@@ -31,7 +31,9 @@ import org.xutils.x;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -184,7 +186,6 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     RelativeLayout relaAccerditentrustbook;
     @BindView(R.id.rela_accerditentrustcard)
     RelativeLayout relaAccerditentrustcard;
-    private DialogUtils dialogUtils;
     private TextView camera;
     private TextView picstorage;
     private static final int PHOTO_REQUEST_CAMERA = 3;//相机
@@ -193,8 +194,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
 
     private int TYPE = 11;
     private Bitmap photo;
-    private List picPathList=new ArrayList();
-    private String pathImage;//相册中选中图片的path
+    private Map picPathList=new HashMap();
     private PicUpLoadUtils upLoadUtils;
 
     @Override
@@ -209,18 +209,15 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private void initView() {
         title.setText("申请保函");
         titleImageleft.setVisibility(View.VISIBLE);
-        dialogUtils = new DialogUtils();
          upLoadUtils=new PicUpLoadUtils(GuaranteeApplyActivity.this);
 
     }
 
-    @OnClick({R.id.title_imageleft, R.id.radiobtnisthree, R.id.radiobtnnothree,R.id.radiobtnishas,R.id.radiobtnnothas,R.id.takepic_ivthreecetifte,R.id.takepic_businesslicense,R.id.takepic_ivorgancode,R.id.takepic_ivtaxrigsion,R.id.takepic_ivopenaccountlicense,R.id.takepic_ivqualificationprofile,R.id.takepic_ivbidderbook,R.id.takepic_ivlagelprobook,R.id.takepic_ivlagelpersoncard,R.id.accerditentrustbook,R.id.takepic_ivaccerditentrustcard,R.id.rela_businesslicense, R.id.rela_taxrigsion, R.id.rela_openaccountlicense, R.id.rela_qualificationprofile, R.id.rela_bidderbook, R.id.rela_accerditentrustcard})
+    @OnClick({R.id.radiobtnisthree, R.id.radiobtnnothree,R.id.radiobtnishas,R.id.radiobtnnothas,R.id.takepic_ivthreecetifte,R.id.takepic_businesslicense,R.id.takepic_ivorgancode,R.id.takepic_ivtaxrigsion,R.id.takepic_ivopenaccountlicense,R.id.takepic_ivqualificationprofile,R.id.takepic_ivbidderbook,R.id.takepic_ivlagelprobook,R.id.takepic_ivlagelpersoncard,R.id.accerditentrustbook,R.id.takepic_ivaccerditentrustcard,R.id.rela_businesslicense, R.id.rela_taxrigsion, R.id.rela_openaccountlicense, R.id.rela_qualificationprofile, R.id.rela_bidderbook, R.id.rela_accerditentrustcard})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
-            case R.id.title_imageleft:
-                finish();
-                break;
+
             case R.id.radiobtnisthree:
                 radiobtnisthree.setChecked(true);
                 radiobtnnothree.setChecked(false);
@@ -289,25 +286,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                 break;
         }
         if (view instanceof ImageView) {
-            ToastUtils.getToastUtils().ToastMsg(GuaranteeApplyActivity.this, TYPE + "type");
-            dialogUtils.diloagShow(GuaranteeApplyActivity.this, R.layout.item_selectphoto);
-            View itemview = dialogUtils.getView();
-            camera = (TextView) itemview.findViewById(R.id.camera);
-            picstorage = (TextView) itemview.findViewById(R.id.picstorage);
-            camera.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    upLoadUtils.selectPicFromCamera();
-                    dialogUtils.dialogDismiss();
-                }
-            });
-            picstorage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    upLoadUtils.selectPicFromGallery();
-                    dialogUtils.dialogDismiss();
-                }
-            });
+            upLoadUtils.setSelectWay(GuaranteeApplyActivity.this,upLoadUtils);
         }
     }
     @Override
@@ -325,9 +304,9 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                         null, null);
                 // 光标移动至开头 获取图片路径
                 cursor.moveToFirst();
-                pathImage = cursor.getString(cursor
+                String pathImage = cursor.getString(cursor
                         .getColumnIndex(MediaStore.Images.Media.DATA));
-                picPathList.add(pathImage);
+                upLoadUtils.setGlleryPicUrl(picPathList,pathImage);
                 upLoadUtils.startPhotoZoom(data.getData());
                 break;
             //拍照
@@ -336,6 +315,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                     if (upLoadUtils.tempFile!=null) {
                         upLoadUtils.startPhotoZoom(Uri.fromFile(upLoadUtils.tempFile));
                     }
+
                 }else {
                     Toast.makeText(GuaranteeApplyActivity.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                 }
@@ -348,7 +328,6 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                         photo = extras.getParcelable("data");
                         setPhoto(photo);
                     }
-
                 }
                 break;
 
@@ -398,35 +377,48 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.title_imageleft:
+                finish();
+                break;
             case R.id.ivthreecetifte_delete:
                 upLoadUtils.hideOrShow(ivthreecetifte,takepicIvthreecetifte,ivthreecetifteDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivbusinesslicense_delete:
                 upLoadUtils.hideOrShow(ivbusinesslicense,takepicbusinesslicense,ivbusinesslicenseDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivorgancode_delete:
                 upLoadUtils.hideOrShow(ivorgancode,takepicIvorgancode,ivorgancodeDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivtaxrigsion_delete:
                 upLoadUtils.hideOrShow(ivtaxrigsion,takepicIvtaxrigsion,ivtaxrigsionDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivopenaccountlicense_delete:
                 upLoadUtils.hideOrShow(ivopenaccountlicense,takepicIvopenaccountlicense,ivopenaccountlicenseDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivqualificationprofile_delete:
                 upLoadUtils.hideOrShow(ivqualificationprofile,takepicIvqualificationprofile,ivqualificationprofileDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivlagelprobook_delete:
                 upLoadUtils.hideOrShow(ivlagelprobook,takepicIvlagelprobook,ivlagelprobookDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivlagelpersoncard_delete:
                 upLoadUtils.hideOrShow(ivlagelpersoncard,takepicIvlagelpersoncard,ivlagelpersoncardDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivaccerditentrustbook_delete:
                 upLoadUtils.hideOrShow(ivaccerditentrustbook,takepicIvaccerditentrustbook,ivaccerditentrustbook);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivaccerditentrustcard_delete:
                 upLoadUtils.hideOrShow(ivaccerditentrustcard,takepicIvaccerditentrustcard,ivaccerditentrustcardDelete);
+                picPathList.remove("threefitepic");
                 break;
             case R.id.ivthreecetifte:
                 Intent intent =new Intent(GuaranteeApplyActivity.this,BigPicActivity.class);

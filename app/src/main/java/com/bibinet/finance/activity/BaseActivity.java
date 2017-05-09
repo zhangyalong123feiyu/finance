@@ -26,7 +26,7 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.tr_void,R.anim.tr_void);
+        overridePendingTransition(R.anim.tr_void,R.anim.tr_exit);
     }
     //创建一个检测权限是否授权的方法
     public boolean checkHasperisson(String... permissons){
@@ -62,7 +62,7 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        overridePendingTransition(R.anim.tr_entry,R.anim.tr_void);
+        overridePendingTransition(R.anim.tr_void,R.anim.tr_entry);
     }
 
     @Override

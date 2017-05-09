@@ -42,7 +42,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.bibinet.finance.activity.MainActivity.currentTabIndex;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,7 +114,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
     private TextView[] mTabsTop;
     private TextView[] mTabs;
     private int index;
-
+    private int currentTabIndex;
     public FragmentHome() {
         // Required empty public constructor
     }
@@ -201,8 +200,6 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
                 scrollview.scrollTo(0, 0);
             }
         });
-
-
     }
 
     private LoopViewPager.OnDispatchTouchEventListener mDispatchOnTouchListener = new LoopViewPager.OnDispatchTouchEventListener() {

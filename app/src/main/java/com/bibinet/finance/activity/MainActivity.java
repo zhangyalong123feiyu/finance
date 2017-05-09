@@ -102,21 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @OnClick({R.id.bottomhome, R.id.bottommy, R.id.bottommore})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bottomhome:
-                index=0;
-                break;
-            case R.id.bottommy:
-                index=1;
-                break;
-            case R.id.bottommore:
-                index=2;
-                break;
-        }
-    }
-
     public void operationLogin() {
         fragments = new Fragment[]{fragementHome, fragementOperation, fragementmore};
         getSupportFragmentManager().beginTransaction().replace(R.id.fragementcontainer, fragementHome).show(fragementHome).

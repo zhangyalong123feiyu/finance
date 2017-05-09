@@ -11,11 +11,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bibinet.finance.R;
 import com.bibinet.finance.activity.GuaranteeApplyActivity;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bibinet on 2017-5-8.
@@ -158,5 +162,64 @@ public class PicUpLoadUtils {
         picview.setVisibility(View.GONE);
         takepicview.setVisibility(View.VISIBLE);
         deleteimage.setVisibility(View.GONE);
+    }
+    public void setGlleryPicUrl(Map picPathList, String pathImage){
+        switch (TYPE) {
+            case 11:
+                picPathList.put("threefitepic",pathImage);
+                break;
+            case 12:
+                picPathList.put("businisslicnse",pathImage);
+                break;
+            case 13:
+                picPathList.put("organcode",pathImage);
+                break;
+            case 14:
+                picPathList.put("taxrigison",pathImage);
+                break;
+            case 15:
+                picPathList.put("openaccount",pathImage);
+                break;
+            case 16:
+                picPathList.put("qualiaficationprofile",pathImage);
+                break;
+            case 17:
+                picPathList.put("legalprobook",pathImage);
+                break;
+            case 18:
+                picPathList.put("legalpersoncard",pathImage);
+                break;
+            case 19:
+                picPathList.put("accerentrustbook",pathImage);
+                break;
+            case 20:
+                picPathList.put("accerentrustcard",pathImage);
+                break;
+
+            default:
+                break;
+        }
+    }
+    public void setSelectWay(Activity activity, final PicUpLoadUtils upLoadUtils){
+        ToastUtils.getToastUtils().ToastMsg(activity, TYPE + "type");
+       final DialogUtils dialogUtils=new DialogUtils();
+        dialogUtils.diloagShow(activity, R.layout.item_selectphoto);
+        View itemview = dialogUtils.getView();
+         TextView camera = (TextView) itemview.findViewById(R.id.camera);
+         TextView picstorage = (TextView) itemview.findViewById(R.id.picstorage);
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upLoadUtils.selectPicFromCamera();
+                dialogUtils.dialogDismiss();
+            }
+        });
+        picstorage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upLoadUtils.selectPicFromGallery();
+                dialogUtils.dialogDismiss();
+            }
+        });
     }
 }

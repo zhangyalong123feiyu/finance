@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="titibar_hight">56dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="bottom_height">56dp</dimen>
+    <dimen name="titletextsize">18sp</dimen>
+    <dimen name="titlebarheight">45dp</dimen>
+    <dimen name="textviewheight">35dp</dimen>
+    <dimen name="textsize">15sp</dimen>
 
     <!-- 文字尺寸 -->
     <dimen name="text_size20">20sp</dimen>
@@ -14,4 +21,6 @@
     <dimen name="text_size12">12sp</dimen>
     <dimen name="text_size11">11sp</dimen>
     <dimen name="text_size10">10sp</dimen>
+
+
 </resources>

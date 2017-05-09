@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bibinet.finance.R;
+import com.bibinet.finance.activity.GuaranteeInfoActivity;
 import com.bibinet.finance.bean.CompanyData;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class CompanyDataAdapter extends RecyclerView.Adapter<CompanyDataAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                context.startActivity(new Intent(context, IncludsionInfomationActivity.class));
+               context.startActivity(new Intent(context, GuaranteeInfoActivity.class));
             }
         });
     }
