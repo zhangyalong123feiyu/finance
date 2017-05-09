@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bibinet.finance.R;
+import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.utils.SharedPresUtils;
 import com.jaeger.library.StatusBarUtil;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static Fragment[] fragments;
     public static RelativeLayout[] mTabs;
     private FragmentOperation fragementOperation;
-    private FragmentLogin fragementMy;
+    private FragmentLogin fragementLogin;
     private int index;
     public static int currentTabIndex;
     private long mPressedTime=0;
@@ -67,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         fragementHome = new FragmentHome();
         fragmentCompany = new FragmentCompany();
         fragmentBank=new FragmentBank();
-        fragementMy = new FragmentLogin();
+        fragementLogin = new FragmentLogin();
         fragementOperation=new FragmentOperation();
         fragementmore = new FragmentMore();
-        fragments = new Fragment[]{fragementHome, fragementMy, fragementmore};
+        fragments = new Fragment[]{fragementHome, fragementLogin, fragementmore};
         mTabs = new RelativeLayout[3];
         mTabs[0] = (RelativeLayout) findViewById(R.id.bottomhome);
         mTabs[1] = (RelativeLayout) findViewById(R.id.bottommy);
@@ -111,16 +112,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void companyLogin() {
-        fragments = new Fragment[]{fragementHome, fragmentCompany, fragementmore};
+       fragments = new Fragment[]{fragementHome, fragmentCompany, fragementmore};
         getSupportFragmentManager().beginTransaction().replace(R.id.fragementcontainer, fragementHome).show(fragementHome).
-                add(R.id.fragementcontainer, fragmentCompany).hide(fragmentCompany).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
+                add(R.id.fragementcontainer, fragementLogin).hide(fragementLogin).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
                 .commit();
     }
 
     private void noLogin() {
-        fragments = new Fragment[]{fragementHome, fragementMy, fragementmore};
+        fragments = new Fragment[]{fragementHome, fragementLogin, fragementmore};
         getSupportFragmentManager().beginTransaction().replace(R.id.fragementcontainer, fragementHome).show(fragementHome).
-                add(R.id.fragementcontainer, fragementMy).hide(fragementMy).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
+                add(R.id.fragementcontainer, fragementLogin).hide(fragementLogin).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
                 .commit();
     }
 

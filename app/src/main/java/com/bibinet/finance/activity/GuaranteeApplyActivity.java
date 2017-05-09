@@ -21,10 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bibinet.finance.R;
+import com.bibinet.finance.presenter.presenterimpl.GuranteeApplayPresenterImp;
 import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.utils.PicUpLoadUtils;
 import com.bibinet.finance.utils.ToastUtils;
+import com.bibinet.finance.view.GuranteApplayView;
 
 import org.xutils.x;
 
@@ -43,7 +45,7 @@ import butterknife.OnClick;
  * Created by bibinet on 2017-5-3.
  */
 
-public class GuaranteeApplyActivity extends BaseActivity implements View.OnClickListener {
+public class GuaranteeApplyActivity extends BaseActivity implements View.OnClickListener,GuranteApplayView {
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.title_imageright)
@@ -196,6 +198,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private Bitmap photo;
     private Map picPathList=new HashMap();
     private PicUpLoadUtils upLoadUtils;
+    private GuranteeApplayPresenterImp presenterImp;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -203,7 +206,12 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_guaranteeapply);
         ButterKnife.bind(this);
         initView();
+        upLoadPic();
 //        setListener();
+    }
+
+    private void upLoadPic() {
+        presenterImp=new GuranteeApplayPresenterImp(this);
     }
 
     private void initView() {
@@ -306,6 +314,10 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                 cursor.moveToFirst();
                 String pathImage = cursor.getString(cursor
                         .getColumnIndex(MediaStore.Images.Media.DATA));
+                File file=new File(pathImage);
+                //上传图片
+                presenterImp.UpLoadPic(file,1);
+
                 upLoadUtils.setGlleryPicUrl(picPathList,pathImage);
                 upLoadUtils.startPhotoZoom(data.getData());
                 break;
@@ -432,4 +444,13 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         }
     }
 
+    @Override
+    public void showProgress() {
+
     }
+
+    @Override
+    public void hideProgress() {
+
+    }
+}
