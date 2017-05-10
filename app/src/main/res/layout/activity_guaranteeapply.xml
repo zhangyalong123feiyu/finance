@@ -176,6 +176,7 @@
                         android:id="@+id/ivthreecetifte"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:onClick="onClick"
                         android:scaleType="fitXY"
                         android:paddingLeft="5dp" />
 

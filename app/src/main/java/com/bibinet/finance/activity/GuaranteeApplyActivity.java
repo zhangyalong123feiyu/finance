@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bibinet.finance.R;
 import com.bibinet.finance.presenter.presenterimpl.GuranteeApplayPresenterImp;
+import com.bibinet.finance.utils.BitMapCompressUtils;
 import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.utils.LogUtils;
 import com.bibinet.finance.utils.PicUpLoadUtils;
@@ -32,6 +33,7 @@ import org.xutils.x;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -199,6 +201,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
     private Map picPathList=new HashMap();
     private PicUpLoadUtils upLoadUtils;
     private GuranteeApplayPresenterImp presenterImp;
+    private BitMapCompressUtils bitMapCompressUtil;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -218,6 +221,7 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
         title.setText("申请保函");
         titleImageleft.setVisibility(View.VISIBLE);
          upLoadUtils=new PicUpLoadUtils(GuaranteeApplyActivity.this);
+        bitMapCompressUtil=new BitMapCompressUtils();
 
     }
 
@@ -325,6 +329,8 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
             case PHOTO_REQUEST_CAMERA:
                 if (upLoadUtils.hasSdcard()) {
                     if (upLoadUtils.tempFile!=null) {
+                        LogUtils.getLogInstance().logMessage("拍照");
+                        presenterImp.UpLoadPic(upLoadUtils.tempFile,1);
                         upLoadUtils.startPhotoZoom(Uri.fromFile(upLoadUtils.tempFile));
                     }
 
@@ -338,6 +344,11 @@ public class GuaranteeApplyActivity extends BaseActivity implements View.OnClick
                     Bundle extras = data.getExtras();
                     if (extras != null) {
                         photo = extras.getParcelable("data");
+                        try {
+                            bitMapCompressUtil.saveBitMapToFile(photo,"baochun.jpg");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         setPhoto(photo);
                     }
                 }

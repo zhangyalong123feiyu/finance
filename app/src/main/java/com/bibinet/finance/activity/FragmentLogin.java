@@ -108,6 +108,7 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
                 break;
             case R.id.btn_login:
                 ((MainActivity)getActivity()).companyLogin();//调试
+                SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
                 initBottomSelect();//调试
                 String number=inputphoneNumber.getText().toString().trim();
                 	if (TextUtils.isEmpty(number)) {
@@ -143,9 +144,9 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
         String resultCode = LoginInfo.getResultCode();
         	switch (Integer.parseInt(resultCode)) {
         			case 00000000:
-                        ((MainActivity)getActivity()).companyLogin();
+                     /*   ((MainActivity)getActivity()).companyLogin();
                         SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
-                        initBottomSelect();
+                        initBottomSelect();*/
         				break;
         			case 77777777:
                             Toast.makeText(getActivity(),"提交数据错误",Toast.LENGTH_SHORT).show();

@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     public void companyLogin() {
        fragments = new Fragment[]{fragementHome, fragmentCompany, fragementmore};
         getSupportFragmentManager().beginTransaction().replace(R.id.fragementcontainer, fragementHome).show(fragementHome).
-                add(R.id.fragementcontainer, fragementLogin).hide(fragementLogin).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
+                add(R.id.fragementcontainer, fragmentCompany).hide(fragmentCompany).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
                 .commit();
     }
 
