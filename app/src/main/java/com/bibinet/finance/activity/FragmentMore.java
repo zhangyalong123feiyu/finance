@@ -83,6 +83,7 @@ public class FragmentMore extends Fragment {
             case R.id.contactour:
                 break;
             case R.id.setting:
+                startActivity(new Intent(getActivity(),SettingActivity.class));
                 break;
         }
     }

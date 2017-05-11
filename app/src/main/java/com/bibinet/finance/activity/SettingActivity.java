@@ -1,6 +1,7 @@
 package com.bibinet.finance.activity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bibinet.finance.R;
+import com.bibinet.finance.utils.DataCleanManagerUtils;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +32,8 @@ public class SettingActivity extends BaseActivity {
     ImageView titleImageleft;
     @BindView(R.id.clearcache)
     LinearLayout clearcache;
+    private String cachePath= Environment.getExternalStorageDirectory()+"/Finance/";
+    private File cacheFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +46,14 @@ public class SettingActivity extends BaseActivity {
     private void initView() {
         title.setText(getString(R.string.setting));
         titleImageleft.setVisibility(View.VISIBLE);
+         cacheFile=new File(cachePath);
+        try {
+            String sizeInfo=DataCleanManagerUtils.getCacheSize(cacheFile);
+            cachesize.setText(sizeInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @OnClick({R.id.title_imageleft, R.id.clearcache})
@@ -55,6 +69,11 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void clearCahce() {
-
+        DataCleanManagerUtils.deleteFolderFile(cachePath,false);
+        try {
+            cachesize.setText(DataCleanManagerUtils.getCacheSize(cacheFile));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
