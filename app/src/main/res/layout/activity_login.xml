@@ -47,7 +47,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="账号"
+                android:text="@string/accountname"
                 android:textColor="@color/text3_color"
                 android:textSize="15sp" />
 
@@ -104,7 +104,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="验证码"
+                android:text="@string/passwrod"
                 android:textColor="@color/text3_color"
                 android:textSize="15sp" />
 
