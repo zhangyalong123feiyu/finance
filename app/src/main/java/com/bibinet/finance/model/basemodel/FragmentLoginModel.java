@@ -7,7 +7,7 @@ import com.bibinet.finance.bean.LoginResultBean;
  */
 
 public interface FragmentLoginModel {
-    void Longin(String mobileNum,String deveceCode,String accountType,OnLoginListioner listioner);
+    void Longin(String mobileNum,String passWord,OnLoginListioner listioner);
     interface OnLoginListioner{
         void onLoginSucess(LoginResultBean loginResultBean);
         void onLoginFailed(String messge);

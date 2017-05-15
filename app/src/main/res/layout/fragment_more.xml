@@ -231,4 +231,5 @@
             android:layout_marginRight="20dp"
             android:src="@mipmap/a" />
     </LinearLayout>
+
 </com.zhy.autolayout.AutoLinearLayout>

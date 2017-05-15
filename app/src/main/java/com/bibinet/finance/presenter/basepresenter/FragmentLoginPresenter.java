@@ -5,5 +5,5 @@ package com.bibinet.finance.presenter.basepresenter;
  */
 
 public interface FragmentLoginPresenter {
-    void onLoadData(String numberphone,String deveCode,String accountTyepe);
+    void onLoadData(String numberphone,String passWord);
 }

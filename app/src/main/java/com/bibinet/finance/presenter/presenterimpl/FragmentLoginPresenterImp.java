@@ -19,9 +19,9 @@ public class FragmentLoginPresenterImp implements FragmentLoginPresenter {
         this.fragmentLoginView = fragmentLoginView;
         fragmentLoginModelImp=new FragmentLoginModelImp();
     }
-    public void onLoadData(String numberphone,String deveCode,String accountTyepe){
+    public void onLoadData(String numberphone,String passWrod){
         fragmentLoginView.showProgress();
-        fragmentLoginModelImp.Longin(numberphone, deveCode, accountTyepe, new FragmentLoginModel.OnLoginListioner() {
+        fragmentLoginModelImp.Longin(numberphone, passWrod,new FragmentLoginModel.OnLoginListioner() {
             @Override
             public void onLoginSucess(LoginResultBean LoginInfo) {
                 fragmentLoginView.showData(LoginInfo);

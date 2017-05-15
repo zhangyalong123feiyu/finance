@@ -21,6 +21,7 @@ import com.bibinet.finance.R;
 import com.bibinet.finance.adapter.CompanyDataAdapter;
 import com.bibinet.finance.adapter.PicAdapter;
 import com.bibinet.finance.bean.CompanyData;
+import com.bibinet.finance.constant.Constants;
 import com.bibinet.finance.view.FragmentCompanyView;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
@@ -83,6 +84,7 @@ public class FragmentCompany extends Fragment implements FragmentCompanyView{
         list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
         list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
         list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
+
     }
 
     private void initView() {

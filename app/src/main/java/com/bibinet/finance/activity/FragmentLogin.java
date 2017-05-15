@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bibinet.finance.R;
 import com.bibinet.finance.bean.LoginResultBean;
+import com.bibinet.finance.constant.Constants;
 import com.bibinet.finance.presenter.presenterimpl.FragmentBankPresenterImp;
 import com.bibinet.finance.presenter.presenterimpl.FragmentLoginPresenterImp;
 import com.bibinet.finance.utils.LogUtils;
@@ -26,6 +27,7 @@ import com.bibinet.finance.utils.ProgressDialogUtils;
 import com.bibinet.finance.utils.SharedPresUtils;
 import com.bibinet.finance.utils.ToastUtils;
 import com.bibinet.finance.view.FragmentLoginView;
+import com.google.gson.Gson;
 import com.zhy.autolayout.utils.DimenUtils;
 
 import butterknife.BindView;
@@ -51,8 +53,8 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
     EditText inputphoneNumber;
     @BindView(R.id.textView2)
     TextView textView2;
-    @BindView(R.id.inputexacode)
-    EditText inputexacode;
+    @BindView(R.id.inputpassword)
+    EditText inputpassword;
     @BindView(R.id.relativeLayout1)
     LinearLayout relativeLayout1;
     @BindView(R.id.btn_login)
@@ -97,26 +99,23 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
         unbind.unbind();
     }
 
-    @OnClick({R.id.btn_send, R.id.inputphone_number, R.id.inputexacode, R.id.btn_login, R.id.txt_service})
+    @OnClick({R.id.btn_send, R.id.btn_login, R.id.txt_service})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
                 break;
-            case R.id.inputphone_number:
-                break;
-            case R.id.inputexacode:
-                break;
             case R.id.btn_login:
-                ((MainActivity)getActivity()).companyLogin();//调试
-                SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
-                initBottomSelect();//调试
+//                ((MainActivity)getActivity()).companyLogin();//调试
+//                SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
+//                initBottomSelect();//调试
                 String number=inputphoneNumber.getText().toString().trim();
+                String password=inputpassword.getText().toString().trim();
                 	if (TextUtils.isEmpty(number)) {
-                        ToastUtils.getToastUtils().ToastMsg(getActivity(),"手机号不能为空");
-                			} else if(PhoneNumberUtils.isMobileNumber(number)){
-                        presenterImp.onLoadData(number,"3","3");
-                			}else {
-                        ToastUtils.getToastUtils().ToastMsg(getActivity(),"请输入正确的手机号");
+                        ToastUtils.getToastUtils().ToastMsg(getActivity(),"用户名不能为空");
+                			} else if(TextUtils.isEmpty(password)){
+                        ToastUtils.getToastUtils().ToastMsg(getActivity(),"密码不能为空");
+                    }else {
+                        presenterImp.onLoadData(number,password);
                     }
             case R.id.txt_service:
                 break;
@@ -136,27 +135,29 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
     }
     @Override
     public void showLoadFailed(String messge) {
-
+        ToastUtils.getToastUtils().ToastMsg(getActivity(),messge);
     }
 
     @Override
     public void showData(LoginResultBean LoginInfo) {
-        String resultCode = LoginInfo.getResultCode();
-        	switch (Integer.parseInt(resultCode)) {
-        			case 00000000:
-                     /*   ((MainActivity)getActivity()).companyLogin();
-                        SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
-                        initBottomSelect();*/
-        				break;
-        			case 77777777:
-                            Toast.makeText(getActivity(),"提交数据错误",Toast.LENGTH_SHORT).show();
-                        dialogUtils.hideProgressDialgo();
-        				break;
+       	switch (Integer.parseInt(LoginInfo.getResCode())) {
+       			case 0000:
+                    LoginResultBean.ReturnDataBean loginDataInfo = LoginInfo.getReturnData();
+                    //将用户信息保存到常亮中
+                    Gson gson=new Gson();
+                    Constants.loginData=gson.toJson(loginDataInfo);
+                    SharedPresUtils.getsSharedPresUtils(getActivity()).putString("loginDataInfo",Constants.loginData);
+       			    ((MainActivity)getActivity()).companyLogin();
+                   SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
+                    initBottomSelect();
+       				break;
+       			case 0002:
+                    ToastUtils.getToastUtils().ToastMsg(getActivity(),"用户名或密码错误");
+       				break;
 
-        			default:
-        				break;
-        			}
+       			default:
+       				break;
+       			}
     }
-
 
 }

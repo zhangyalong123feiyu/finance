@@ -52,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
     public static int currentTabIndex;
     private long mPressedTime=0;
     private String accountType;
-
+    private static MainActivity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
       //  StatusBarUtil.setColor(MainActivity.this, Color.argb(255,127, 255, 212),0);
+        activity=this;
         StatusBarUtil.setTranslucent(this);
         ButterKnife.bind(this);
         initView();
@@ -118,13 +119,15 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void noLogin() {
+    public void noLogin() {
         fragments = new Fragment[]{fragementHome, fragementLogin, fragementmore};
         getSupportFragmentManager().beginTransaction().replace(R.id.fragementcontainer, fragementHome).show(fragementHome).
                 add(R.id.fragementcontainer, fragementLogin).hide(fragementLogin).add(R.id.fragementcontainer, fragementmore).hide(fragementmore)
                 .commit();
     }
-
+public static MainActivity getMainInstance(){
+    return activity;
+}
 
     @OnClick({R.id.bottomhome, R.id.bottommy, R.id.bottommore})
     public void onClick(View view) {
