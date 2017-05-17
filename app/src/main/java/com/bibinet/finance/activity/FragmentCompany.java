@@ -4,13 +4,10 @@ package com.bibinet.finance.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,38 +16,37 @@ import android.widget.TextView;
 
 import com.bibinet.finance.R;
 import com.bibinet.finance.adapter.CompanyDataAdapter;
-import com.bibinet.finance.adapter.PicAdapter;
 import com.bibinet.finance.bean.CompanyData;
-import com.bibinet.finance.constant.Constants;
+import com.bibinet.finance.builder.MyViewPager;
+import com.bibinet.finance.constant.ProjectUrl;
+import com.bibinet.finance.utils.BannerUtils;
 import com.bibinet.finance.view.FragmentCompanyView;
-import com.hejunlin.superindicatorlibray.CircleIndicator;
-import com.hejunlin.superindicatorlibray.LoopViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-
+import java.util.Arrays;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentCompany extends Fragment implements FragmentCompanyView{
+public class FragmentCompany extends Fragment implements FragmentCompanyView {
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.title_imageleft)
     ImageView titleimageleft;
     @BindView(R.id.viewpager)
-    LoopViewPager viewpager;
-    @BindView(R.id.indicator)
-    CircleIndicator indicator;
+    MyViewPager viewpager;
     @BindView(R.id.companyrecylerview)
     RecyclerView companyrecylerview;
     @BindView(R.id.swiprefesh)
     SwipeRefreshLayout swiprefesh;
+    @BindView(R.id.group_contain)
+    LinearLayout groupContain;
     private View view;
-    private List<CompanyData> list=new ArrayList<>();
+    private List<CompanyData> list = new ArrayList<>();
+
     public FragmentCompany() {
         // Required empty public constructor
     }
@@ -72,49 +68,37 @@ public class FragmentCompany extends Fragment implements FragmentCompanyView{
         titleimageleft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),GuaranteeApplyActivity.class));
+                startActivity(new Intent(getActivity(), GuaranteeApplyActivity.class));
             }
         });
     }
 
     private void initData() {
-        list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
-        list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
-        list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
-        list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
-        list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
-        list.add(new CompanyData("张亚龙","2016.10","今天是个好日子！"));
+        list.add(new CompanyData("张亚龙", "2016.10", "今天是个好日子！"));
+        list.add(new CompanyData("张亚龙", "2016.10", "今天是个好日子！"));
+        list.add(new CompanyData("张亚龙", "2016.10", "今天是个好日子！"));
+        list.add(new CompanyData("张亚龙", "2016.10", "今天是个好日子！"));
+        list.add(new CompanyData("张亚龙", "2016.10", "今天是个好日子！"));
+        list.add(new CompanyData("张亚龙", "2016.10", "今天是个好日子！"));
 
     }
 
     private void initView() {
         titleimageleft.setImageResource(R.mipmap.ic_launcher);
         titleimageleft.setVisibility(View.VISIBLE);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         };
         companyrecylerview.setLayoutManager(linearLayoutManager);
-        companyrecylerview.setAdapter(new CompanyDataAdapter(getActivity(),list));
-        viewpager.setAdapter(new PicAdapter(getActivity()));
-        viewpager.setOnDispatchTouchEventListener(mDispatchOnTouchListener);
-        viewpager.setLooperPic(true);
-
-        indicator.setViewPager(viewpager);
+        companyrecylerview.setAdapter(new CompanyDataAdapter(getActivity(), list));
+        /*轮播图*/
+        BannerUtils bannerUtils=new BannerUtils(getActivity(),viewpager,groupContain,Arrays.asList(ProjectUrl.ImageUrls));
+        bannerUtils.startPlayBanner();
     }
-    private LoopViewPager.OnDispatchTouchEventListener mDispatchOnTouchListener = new LoopViewPager.OnDispatchTouchEventListener() {
-        @Override
-        public void onDispatchKeyEvent(MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                viewpager.setLooperPic(false);
-            } else if (event.getAction() == MotionEvent.ACTION_UP
-                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                viewpager.setLooperPic(true);
-            }
-        }
-    };
+
 
     @Override
     public void showProgress() {
@@ -134,5 +118,10 @@ public class FragmentCompany extends Fragment implements FragmentCompanyView{
     @Override
     public void showLoadFailed() {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

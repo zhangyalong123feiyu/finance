@@ -30,25 +30,24 @@
                     <include layout="@layout/titlebar"
                         />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                            <com.hejunlin.superindicatorlibray.LoopViewPager
-                                android:id="@+id/viewpager"
-                                android:layout_width="match_parent"
-                                android:layout_height="200dp"
-                                android:layout_alignParentTop="true" />
-                            <com.hejunlin.superindicatorlibray.CircleIndicator
-                                android:id="@+id/indicator"
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp"
-                                android:layout_gravity="right|center_vertical"
-                                android:layout_alignParentBottom="true"
-                                android:background="#30BA55D3"
-                                android:gravity="center"
-                                android:orientation="horizontal" />
-                        </RelativeLayout>
+                        <com.bibinet.finance.builder.MyViewPager
+                            android:id="@+id/viewpager"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp" />
+
+                        <LinearLayout
+                            android:id="@+id/group_contain"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_alignBottom="@id/viewpager"
+                            android:background="#33000000"
+                            android:gravity="end|center_vertical"
+                            android:orientation="horizontal" />
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

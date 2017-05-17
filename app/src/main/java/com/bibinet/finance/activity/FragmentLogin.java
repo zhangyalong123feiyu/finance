@@ -71,13 +71,11 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
     private ProgressDialogUtils dialogUtils;
 
     public FragmentLogin() {
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.activity_login, container, false);
         unbind=ButterKnife.bind(this, view);
         presenterImp=new FragmentLoginPresenterImp(this);
@@ -105,9 +103,9 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
             case R.id.btn_send:
                 break;
             case R.id.btn_login:
-//                ((MainActivity)getActivity()).companyLogin();//调试
-//                SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
-//                initBottomSelect();//调试
+                ((MainActivity)getActivity()).companyLogin();//调试
+                SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
+                initBottomSelect();//调试
                 String number=inputphoneNumber.getText().toString().trim();
                 String password=inputpassword.getText().toString().trim();
                 	if (TextUtils.isEmpty(number)) {
@@ -130,7 +128,6 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
 
     @Override
     public void hideProgress() {
-        ToastUtils.getToastUtils().ToastMsg(getActivity(),"yingchang");
         dialogUtils.hideProgressDialgo();
     }
     @Override
@@ -147,10 +144,14 @@ public class FragmentLogin extends Fragment implements FragmentLoginView{
                     Gson gson=new Gson();
                     Constants.loginData=gson.toJson(loginDataInfo);
                     SharedPresUtils.getsSharedPresUtils(getActivity()).putString("loginDataInfo",Constants.loginData);
-       			    ((MainActivity)getActivity()).companyLogin();
-                   SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
+       			   // ((MainActivity)getActivity()).companyLogin();
+                    MainActivity.getMainInstance().companyLogin();
+                    SharedPresUtils.getsSharedPresUtils(getActivity()).putString("AccountType","1");
                     initBottomSelect();
        				break;
+       			case 0001:
+                    ToastUtils.getToastUtils().ToastMsg(getActivity(),"用户名或密码错误");
+                    break;
        			case 0002:
                     ToastUtils.getToastUtils().ToastMsg(getActivity(),"用户名或密码错误");
        				break;

@@ -1,9 +1,10 @@
 package com.bibinet.finance.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -19,19 +20,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bibinet.finance.R;
-import com.bibinet.finance.adapter.FragmentHomeBannerAdapter;
+import com.bibinet.finance.adapter.BannerViewpagerAdapter;
 import com.bibinet.finance.bean.StudentBean;
 import com.bibinet.finance.builder.MyGestureListioner;
+import com.bibinet.finance.builder.MyViewPager;
 import com.bibinet.finance.builder.ViewAllShowLinearLayout;
 import com.bibinet.finance.constant.ProjectUrl;
 import com.bibinet.finance.presenter.presenterimpl.FragmentHomePresenterImpl;
+import com.bibinet.finance.utils.BannerUtils;
+import com.bibinet.finance.utils.DensityUtil;
 import com.bibinet.finance.utils.DialogUtils;
 import com.bibinet.finance.view.FragmentHomeView;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
-import com.hejunlin.superindicatorlibray.LoopViewPager;
-import com.jaeger.library.StatusBarUtil;
-import com.zhy.autolayout.utils.AutoUtils;
-import com.zhy.autolayout.utils.DimenUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,9 +55,7 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
     @BindView(R.id.title_imageleft)
     ImageView titleImageleft;
     @BindView(R.id.viewpager)
-    LoopViewPager viewpager;
-    @BindView(R.id.indicator)
-    CircleIndicator indicator;
+    MyViewPager viewpager;
     @BindView(R.id.search_edit)
     EditText searchEdit;
     @BindView(R.id.search_image)
@@ -103,6 +101,8 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
     @BindView(R.id.folatbutton)
     Button folatbutton;
     Unbinder unbinder;
+    @BindView(R.id.group_contain)
+    LinearLayout groupContain;
     private View view;
     private List<String> pics = new ArrayList<>();
     private GestureDetector gestureListioner;
@@ -115,10 +115,11 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
     private TextView[] mTabs;
     private int index;
     private int currentTabIndex;
+    private int lastPosition;
+    private boolean isRunning;
     public FragmentHome() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,46 +149,39 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
                         Log.i("TAG", "到达顶部");
                         ll2.setVisibility(View.VISIBLE);
                     }
-
                     @Override
                     public void onViewGone() {
                         ll2.setVisibility(View.GONE);
                     }
                 });
-        pics = Arrays.asList(ProjectUrl.ImageUrls);
-        FragmentHomeBannerAdapter adapter = new FragmentHomeBannerAdapter(getActivity(), pics);
         //轮播图代码部分
-        viewpager.setAdapter(adapter);
-        viewpager.setLooperPic(true);
-        viewpager.setOnDispatchTouchEventListener(mDispatchOnTouchListener);
-        indicator.setViewPager(viewpager);
-        indicator.getDataSetObserver();
-
+       BannerUtils bannerUtils=new BannerUtils(getActivity(),viewpager,groupContain,Arrays.asList(ProjectUrl.ImageUrls));
+       bannerUtils.startPlayBanner();
         //滑动按钮部分
         gestureListioner = new GestureDetector(new MyGestureListioner(getActivity(), scrollview, folatbutton));
-       scrollview.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               return gestureListioner.onTouchEvent(event);
-           }
-       });
+        scrollview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureListioner.onTouchEvent(event);
+            }
+        });
         //行业动态，成功案例，旗下品牌三个Fragment部分
-        fragementprofe=new FragmentProfession();
-        fragmentSucess=new FragmentSucess();
-        fragementBrand=new FragmentBrand();
+        fragementprofe = new FragmentProfession();
+        fragmentSucess = new FragmentSucess();
+        fragementBrand = new FragmentBrand();
         fragments = new Fragment[]{fragementprofe, fragmentSucess, fragementBrand};
 
-        getChildFragmentManager().beginTransaction().replace(R.id.main_container,fragementprofe ).show(fragementprofe).
+        getChildFragmentManager().beginTransaction().replace(R.id.main_container, fragementprofe).show(fragementprofe).
                 add(R.id.main_container, fragmentSucess).hide(fragmentSucess).add(R.id.main_container, fragementBrand).hide(fragementBrand)
                 .commit();
         mTabs = new TextView[3];
         mTabs[0] = professonalmove;
         mTabs[1] = sucess;
         mTabs[2] = brand;
-        mTabsTop=new TextView[3];
-        mTabsTop[0]=professonalmoveTop;
-        mTabsTop[1]=sucessTop;
-        mTabsTop[2]=brandTop;
+        mTabsTop = new TextView[3];
+        mTabsTop[0] = professonalmoveTop;
+        mTabsTop[1] = sucessTop;
+        mTabsTop[2] = brandTop;
         // 把第一个tab设为选中状态
         mTabs[0].setSelected(true);
         mTabsTop[0].setSelected(true);
@@ -201,19 +195,58 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
             }
         });
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
-    private LoopViewPager.OnDispatchTouchEventListener mDispatchOnTouchListener = new LoopViewPager.OnDispatchTouchEventListener() {
-        @Override
-        public void onDispatchKeyEvent(MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                viewpager.setLooperPic(false);
-            } else if (event.getAction() == MotionEvent.ACTION_UP
-                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                viewpager.setLooperPic(true);
-            }
+    @OnClick({R.id.title, R.id.title_imageleft, R.id.search_image, R.id.professonalmove, R.id.sucess, R.id.brand, R.id.professonalmove_top, R.id.sucess_top, R.id.brand_top, R.id.folatbutton})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.title:
+                break;
+            case R.id.title_imageleft:
+                break;
+            case R.id.search_image:
+                break;
+            case R.id.professonalmove:
+                index = 0;
+                break;
+            case R.id.sucess:
+                index = 1;
+                break;
+            case R.id.brand:
+                index = 2;
+                break;
+            case R.id.professonalmove_top:
+                index = 0;
+                break;
+            case R.id.sucess_top:
+                index = 1;
+                break;
+            case R.id.brand_top:
+                index = 2;
+                break;
+            case R.id.folatbutton:
+                scrollview.scrollTo(0, 0);
+                break;
         }
-    };
-
+        if (currentTabIndex != index) {
+            FragmentTransaction trx = getChildFragmentManager().beginTransaction();
+            trx.hide(fragments[currentTabIndex]);
+            if (!fragments[index].isAdded()) {
+                trx.add(R.id.fragementcontainer, fragments[index]);
+            }
+            trx.show(fragments[index]).commit();
+        }
+        mTabs[currentTabIndex].setSelected(false);
+        mTabsTop[currentTabIndex].setSelected(false);
+        // 把当前tab设为选中状态
+        mTabs[index].setSelected(true);
+        mTabsTop[index].setSelected(true);
+        currentTabIndex = index;
+    }
     @Override
     public void showProgress() {
 
@@ -233,68 +266,4 @@ public class FragmentHome extends Fragment implements FragmentHomeView {
     public void showLoadFailed() {
 
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.title, R.id.title_imageleft, R.id.search_image, R.id.professonalmove, R.id.sucess, R.id.brand, R.id.professonalmove_top, R.id.sucess_top, R.id.brand_top, R.id.folatbutton})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.title:
-                break;
-            case R.id.title_imageleft:
-                break;
-            case R.id.search_image:
-                final DialogUtils dialogUtils=new DialogUtils();
-                dialogUtils.diloagShow(getActivity(),R.layout.titlebar);
-
-                dialogUtils.setDialoglistioner(new DialogUtils.DialogListioner() {
-                    @Override
-                    public void onDialogClickListioner(View view) {
-                        TextView titlexin = (TextView) view.findViewById(R.id.title);
-                        titlexin.setText("wo");
-                    }
-                });
-                break;
-            case R.id.professonalmove:
-                index=0;
-                break;
-            case R.id.sucess:
-                index=1;
-                break;
-            case R.id.brand:
-                index=2;
-                break;
-            case R.id.professonalmove_top:
-                index=0;
-                break;
-            case R.id.sucess_top:
-                index=1;
-                break;
-            case R.id.brand_top:
-                index=2;
-                break;
-            case R.id.folatbutton:
-                scrollview.scrollTo(0,0);
-                break;
-        }
-        if (currentTabIndex != index) {
-            FragmentTransaction trx = getChildFragmentManager().beginTransaction();
-            trx.hide(fragments[currentTabIndex]);
-            if (!fragments[index].isAdded()) {
-                trx.add(R.id.fragementcontainer, fragments[index]);
-            }
-            trx.show(fragments[index]).commit();
-        }
-        mTabs[currentTabIndex].setSelected(false);
-        mTabsTop[currentTabIndex].setSelected(false);
-        // 把当前tab设为选中状态
-        mTabs[index].setSelected(true);
-        mTabsTop[index].setSelected(true);
-        currentTabIndex = index;
-    }
-
 }
